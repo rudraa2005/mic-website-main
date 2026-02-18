@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Faculty Dashboard - MAHE Innovation Centre</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+
+    .liquid-glass {
+      background: rgba(255, 255, 255, .1);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, .2);
+      box-shadow: 0 8px 32px rgba(31, 38, 135, .37);
+    }
+
+    .liquid-glass::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255, 255, 255, .4), rgba(255, 255, 255, .1));
+      border-radius: inherit;
+      z-index: -1;
+    }
+
+    .nav-link::before {
+      content: "";
+      position: absolute;
+      bottom: -5px;
+      left: 50%;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #ff6b35, #ff8c42);
+      transition: all .3s ease;
+      transform: translateX(-50%);
+      border-radius: 2px;
+    }
+
+    .nav-link:hover::before {
+      width: 100%;
+    }
+
+    .glass-card {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .faculty-hero {
+      background: radial-gradient(circle at top left, rgba(255, 107, 53, 0.25), transparent 55%),
+        radial-gradient(circle at bottom right, rgba(15, 23, 42, 0.65), #020617);
+    }
+
+    .stat-card {
+      position: relative;
+      background: linear-gradient(135deg, #020617 0%, #111827 40%, #020617 100%);
+      color: #ffffff;
+      border: 1px solid rgba(15, 23, 42, 0.9);
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.65);
+      transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+        box-shadow 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      transform-origin: center;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 32px 70px rgba(0, 0, 0, 0.8);
+    }
+
+    .timeline-badge {
+      position: relative;
+      padding-left: 2.25rem;
+    }
+
+    .timeline-badge::before {
+      content: '';
+      position: absolute;
+      left: 0.5rem;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 12px;
+      height: 12px;
+      border-radius: 999px;
+      background: #e5e7eb;
+      border: 3px solid #fff;
+      box-shadow: 0 0 0 2px #e5e7eb;
+    }
+
+    .timeline-badge.pending::before {
+      background: #f97316;
+      box-shadow: 0 0 0 2px #fed7aa, 0 0 16px rgba(249, 115, 22, 0.7);
+    }
+
+    .timeline-badge.accepted::before {
+      background: #22c55e;
+      box-shadow: 0 0 0 2px #bbf7d0;
+    }
+
+    .timeline-badge.declined::before {
+      background: #ef4444;
+      box-shadow: 0 0 0 2px #fecaca;
+    }
+
+    .idea-row {
+      transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+    }
+
+    .idea-row:hover {
+      background: rgba(15, 23, 42, 0.02);
+      transform: translateY(-1px);
+      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.08);
+    }
+
+    .badge-pill {
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.25rem 0.7rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    /* Dark Mode Styles (mirrors student pages) */
+    body.dark-mode {
+      background: #0f172a;
+      color: #e2e8f0;
+    }
+
+    body.dark-mode .bg-gray-50,
+    body.dark-mode .bg-gray-100,
+    body.dark-mode .bg-gray-200 {
+      background: #1e293b !important;
+    }
+
+    body.dark-mode .bg-gray-900 {
+      background: #0f172a !important;
+    }
+
+    body.dark-mode .text-gray-800,
+    body.dark-mode .text-gray-900 {
+      color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .text-gray-600,
+    body.dark-mode .text-gray-700 {
+      color: #cbd5e1 !important;
+    }
+
+    body.dark-mode .text-gray-500 {
+      color: #94a3b8 !important;
+    }
+
+    body.dark-mode .text-gray-400 {
+      color: #94a3b8 !important;
+    }
+
+    body.dark-mode .text-white {
+      color: #f8fafc !important;
+    }
+
+    body.dark-mode .text-black {
+      color: #f8fafc !important;
+    }
+
+    body.dark-mode .liquid-glass {
+      background: rgba(30, 41, 59, 0.8) !important;
+    }
+
+    body.dark-mode .nav-link {
+      color: #cbd5e1 !important;
+    }
+
+    body.dark-mode .nav-link:hover {
+      color: #ff6b35 !important;
+    }
+
+    body.dark-mode .bg-white {
+      background: #1e293b !important;
+    }
+
+    body.dark-mode .bg-gray-800 {
+      background: #1e293b !important;
+    }
+
+    body.dark-mode .border-gray-800 {
+      border-color: #1e293b !important;
+    }
+
+    body.dark-mode .border-gray-700 {
+      border-color: #334155 !important;
+    }
+
+    body.dark-mode .glass-card {
+      background: rgba(30, 41, 59, 0.8) !important;
+    }
+
+    body.dark-mode .stat-card {
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.95) 0%, rgba(30, 41, 59, 0.85) 100%) !important;
+    }
+  </style>
+  <script>
+    tailwind.config = { theme: { extend: { colors: { 'orange-primary': '#ff6b35', 'orange-secondary': '#ff8c42' }, fontFamily: { inter: ['Inter', 'sans-serif'] } } } }
+  </script>
+</head>
+
+<body class="bg-gray-200 font-inter overflow-x-hidden">
+  <!-- Navigation (paths are relative to faculty folder) -->
+  <nav class="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-11/12 max-w-6xl">
+    <div class="liquid-glass rounded-full px-6 py-3 relative">
+      <div class="flex justify-between items-center">
+        <div class="flex items-center space-x-2">
+          <div
+            class="w-8 h-8 bg-gradient-to-br from-orange-primary to-orange-secondary rounded-lg flex items-center justify-center">
+            <span class="text-white font-bold text-sm">M</span>
+          </div>
+          <span class="text-gray-800 font-semibold text-lg">MAHE</span>
+        </div>
+        <div class="hidden md:flex items-center space-x-8 ml-auto">
+          <a href="faculty-dashboard.html"
+            class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors font-medium">Dashboard</a>
+          <a href="faculty-committee.html"
+            class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors font-medium">Committee</a>
+          <a href="faculty-events.html"
+            class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors font-medium">Events</a>
+          <a href="faculty-reviews.html"
+            class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors font-medium">Reviews</a>
+          <a href="faculty-incubation.html"
+            class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors font-medium">Incubation</a>
+          <a href="faculty-profile.html"
+            class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors font-medium">Profile</a>
+        </div>
+        <div class="hidden md:flex items-center space-x-4 ml-4">
+          <!-- On a real system this would point to the faculty profile -->
+          <a href="faculty-dashboard.html"
+            class="w-10 h-10 rounded-full bg-orange-primary text-white flex items-center justify-center"
+            title="Faculty Dashboard">
+            <i class="fas fa-user-tie"></i>
+          </a>
+        </div>
+        <button class="md:hidden text-gray-700" id="mobile-menu-btn"><i class="fas fa-bars text-xl"></i></button>
+      </div>
+      <!-- Mobile Menu -->
+      <div id="mobile-menu" class="hidden md:hidden mt-4 pb-2">
+        <div class="flex flex-col space-y-4">
+          <a href="../index-tailwind.html"
+            class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors font-medium">Home</a>
+          <a href="../about.html"
+            class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors font-medium">About Us</a>
+          <a href="../events.html"
+            class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors font-medium">Events</a>
+          <a href="../resources.html"
+            class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors font-medium">Resources</a>
+          <a href="../contact.html"
+            class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors font-medium">Contact</a>
+          <a href="faculty-dashboard.html"
+            class="w-10 h-10 rounded-full bg-orange-primary text-white flex items-center justify-center"
+            title="Faculty Dashboard">
+            <i class="fas fa-user-tie"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <section class="pt-32 pb-24 bg-gray-50 min-h-screen">
+    <div class="container mx-auto px-6 lg:px-12">
+      <div class="mb-4 flex items-center gap-2 text-xs">
+        <!-- Quick faculty menu top-left -->
+        <div class="relative inline-block text-left" id="facultyMenuRoot">
+          <button id="facultyMenuButton"
+            class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-gray-300 bg-white text-gray-700 hover:border-orange-primary hover:text-orange-primary">
+            <i class="fas fa-bars"></i>
+            <span>Faculty menu</span>
+          </button>
+          <div id="facultyMenuPanel"
+            class="hidden absolute mt-2 w-56 rounded-xl bg-white shadow-lg border border-gray-200 py-2 z-20">
+            <button data-faculty-menu="profile"
+              class="w-full text-left px-4 py-2 text-xs text-gray-700 hover:bg-gray-50 flex items-center gap-2">
+              <i class="fas fa-user-cog text-[11px]"></i>
+              Update personal information
+            </button>
+            <button data-faculty-menu="progress"
+              class="w-full text-left px-4 py-2 text-xs text-gray-700 hover:bg-gray-50 flex items-center gap-2">
+              <i class="fas fa-chart-line text-[11px]"></i>
+              View accepted ideas & incubation progress
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- Hero / Header -->
+      <div class="faculty-hero rounded-3xl px-6 py-8 lg:px-10 lg:py-10 mb-10 text-white relative overflow-hidden">
+        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
+          <div>
+            <p class="text-sm uppercase tracking-[0.18em] text-orange-200 mb-2 flex items-center gap-2">
+              <span class="inline-flex w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></span>
+              Faculty View
+            </p>
+            <h1 class="text-3xl lg:text-5xl font-black mb-3 leading-tight">
+              Welcome back, <span id="facultyNameText">Dr. Arun Y Patil</span>
+            </h1>
+            <p class="text-sm lg:text-base text-gray-200 max-w-2xl mb-4">
+              Track ideas submitted in your domain, manage your core committee, and respond to
+              event invitations from across MAHE Innovation Centre.
+            </p>
+            <div class="flex flex-wrap items-center gap-3 text-xs lg:text-sm text-gray-200">
+              <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/30 border border-white/10">
+                <i class="fas fa-building"></i>
+                <span id="facultyDepartmentText">Department of Computer Science &amp; Engineering</span>
+              </span>
+              <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/30 border border-white/10">
+                <i class="fas fa-envelope"></i>
+                <span id="facultyEmailText">arun.patil@mic.edu</span>
+              </span>
+            </div>
+          </div>
+          <div class="flex-1 flex justify-center lg:justify-end">
+            <div class="bg-black/40 border border-white/20 rounded-2xl px-6 py-5 w-full max-w-xs shadow-2xl">
+              <h2 class="text-sm font-semibold text-gray-200 mb-3 flex items-center gap-2">
+                <span class="w-6 h-6 rounded-full bg-orange-primary flex items-center justify-center text-xs"><i
+                    class="fas fa-lightbulb"></i></span>
+                Today at a Glance
+              </h2>
+              <div class="space-y-3 text-xs text-gray-100">
+                <div class="flex items-center justify-between">
+                  <span>Ideas to review</span>
+                  <span class="font-bold text-orange-300" id="ideasToReviewCount">0</span>
+                </div>
+                <div class="flex items-center justify-between">
+                  <span>Pending event RSVPs</span>
+                  <span class="font-bold text-orange-300" id="pendingRsvpCount">0</span>
+                </div>
+                <div class="flex items-center justify-between">
+                  <span>Committee members</span>
+                  <span class="font-bold text-orange-300" id="committeeCount">0</span>
+                </div>
+              </div>
+              <div class="mt-4 text-[11px] text-gray-300 border-t border-white/10 pt-3 flex items-start gap-2">
+                <i class="fas fa-circle-info mt-0.5"></i>
+                <span>Only <strong>Arun Y Patil</strong> can edit the core committee configuration for this
+                  department.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 1. Idea statistics -->
+      <div class="grid md:grid-cols-4 gap-5 mb-10">
+        <div class="stat-card rounded-2xl p-5 flex flex-col justify-between">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-xs uppercase tracking-[0.16em] text-gray-300">Total Ideas</span>
+            <i class="fas fa-layer-group text-orange-primary/80"></i>
+          </div>
+          <div class="flex items-end justify-between">
+            <p class="text-3xl font-black" id="statTotalIdeas">0</p>
+            <p class="text-[11px] text-gray-300">Across your domain</p>
+          </div>
+        </div>
+        <div class="stat-card rounded-2xl p-5 flex flex-col justify-between">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-xs uppercase tracking-[0.16em] text-gray-300">Pending Review</span>
+            <i class="fas fa-hourglass-half text-yellow-300"></i>
+          </div>
+          <div class="flex items-end justify-between">
+            <p class="text-3xl font-black text-yellow-300" id="statPendingIdeas">0</p>
+            <p class="text-[11px] text-gray-300">Need your decision</p>
+          </div>
+        </div>
+        <div class="stat-card rounded-2xl p-5 flex flex-col justify-between">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-xs uppercase tracking-[0.16em] text-gray-300">Approved</span>
+            <i class="fas fa-check-circle text-emerald-300"></i>
+          </div>
+          <div class="flex items-end justify-between">
+            <p class="text-3xl font-black text-emerald-300" id="statApprovedIdeas">0</p>
+            <p class="text-[11px] text-gray-300">Cleared for next stage</p>
+          </div>
+        </div>
+        <div class="stat-card rounded-2xl p-5 flex flex-col justify-between">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-xs uppercase tracking-[0.16em] text-gray-300">Rejected</span>
+            <i class="fas fa-times-circle text-rose-300"></i>
+          </div>
+          <div class="flex items-end justify-between">
+            <p class="text-3xl font-black text-rose-300" id="statRejectedIdeas">0</p>
+            <p class="text-[11px] text-gray-300">With feedback shared</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid lg:grid-cols-3 gap-8 mb-12">
+        <!-- Idea list / context from students -->
+        <div class="lg:col-span-2 glass-card rounded-3xl p-6 lg:p-7 bg-white/80 border border-gray-200/70">
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <h2 class="text-xl font-bold text-gray-900 mb-1 flex items-center gap-2">
+                <i class="fas fa-lightbulb text-orange-primary"></i>
+                Ideas in your domain
+              </h2>
+              <p class="text-sm text-gray-600">See what students have submitted and what still needs your review.</p>
+            </div>
+            <div class="hidden md:flex items-center gap-2 text-xs">
+              <span class="badge-pill bg-orange-50 text-orange-700 border border-orange-200">
+                <span class="w-2 h-2 rounded-full bg-orange-500"></span>
+                Needs review
+              </span>
+              <span class="badge-pill bg-emerald-50 text-emerald-700 border border-emerald-200">
+                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                Approved
+              </span>
+            </div>
+          </div>
+
+          <div class="mb-3 flex items-center justify-between text-[11px]">
+            <span class="text-gray-600">Showing recent 5 ideas</span>
+            <a href="faculty-reviews.html"
+              class="inline-flex items-center gap-1 text-orange-primary hover:text-orange-secondary font-semibold">
+              View All Ideas <i class="fas fa-arrow-right text-[10px]"></i>
+            </a>
+          </div>
+
+          <div class="overflow-x-auto -mx-4 lg:mx-0">
+            <table class="min-w-full text-sm text-left">
+              <thead>
+                <tr class="border-b border-gray-200 text-[11px] uppercase tracking-[0.16em] text-gray-500">
+                  <th class="py-2 px-4 font-semibold">Idea</th>
+                  <th class="py-2 px-4 font-semibold">Student / Team</th>
+                  <th class="py-2 px-4 font-semibold">Status</th>
+                  <th class="py-2 px-4 font-semibold">Needs review?</th>
+                </tr>
+              </thead>
+              <tbody id="ideasTableBody" class="text-xs md:text-sm">
+                <!-- Populated via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Core Committee -->
+        <div class="glass-card rounded-3xl p-6 lg:p-7 bg-white/80 border border-gray-200/70">
+          <div class="flex items-start justify-between mb-4">
+            <div>
+              <h2 class="text-xl font-bold text-gray-900 mb-1 flex items-center gap-2">
+                <i class="fas fa-users-cog text-orange-primary"></i>
+                Core Committee
+              </h2>
+              <p class="text-sm text-gray-600">Department-level committee for your domain.</p>
+            </div>
+          </div>
+
+          <ul id="committeeList" class="space-y-3 text-sm">
+            <!-- Members injected via JS -->
+          </ul>
+
+          <p class="mt-4 text-[11px] text-gray-500">
+            We will connect this to the real faculty authentication later. For now, editing is
+            gated client-side on the logged-in faculty name.
+          </p>
+        </div>
+      </div>
+
+      <!-- 3. Event timeline & RSVPs -->
+      <div class="glass-card rounded-3xl p-6 lg:p-7 bg-white/80 border border-gray-200/70">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-5">
+          <div>
+            <h2 class="text-xl font-bold text-gray-900 mb-1 flex items-center gap-2">
+              <i class="fas fa-calendar-star text-orange-primary"></i>
+              Event invitations &amp; RSVPs
+            </h2>
+            <p class="text-sm text-gray-600">Review where you are scheduled to judge, mentor, or speak.</p>
+          </div>
+          <div id="rsvpBanner"
+            class="hidden md:flex items-center gap-2 text-xs px-3 py-2 rounded-full bg-orange-50 text-orange-700 border border-orange-200">
+            <i class="fas fa-bell-exclamation"></i>
+            <span><span id="rsvpBannerCount">0</span> event(s) need your RSVP.</span>
+          </div>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-6 mb-6">
+          <div class="bg-emerald-50 border border-emerald-200 rounded-2xl px-4 py-4 text-xs">
+            <p class="font-semibold text-emerald-800 mb-1 flex items-center gap-2">
+              <span
+                class="w-6 h-6 rounded-full bg-emerald-500 flex items-center justify-center text-white text-[11px]"><i
+                  class="fas fa-clipboard-check"></i></span>
+              Confirmed sessions
+            </p>
+            <p class="text-emerald-700">You are confirmed for <span id="acceptedEventsCount">0</span> upcoming events.
+            </p>
+          </div>
+          <div class="bg-orange-50 border border-orange-200 rounded-2xl px-4 py-4 text-xs">
+            <p class="font-semibold text-orange-800 mb-1 flex items-center gap-2">
+              <span
+                class="w-6 h-6 rounded-full bg-orange-500 flex items-center justify-center text-white text-[11px]"><i
+                  class="fas fa-hourglass-half"></i></span>
+              Pending RSVPs
+            </p>
+            <p class="text-orange-700">Please respond to <span id="pendingEventsCount">0</span> invitations.</p>
+          </div>
+          <div class="bg-rose-50 border border-rose-200 rounded-2xl px-4 py-4 text-xs">
+            <p class="font-semibold text-rose-800 mb-1 flex items-center gap-2">
+              <span class="w-6 h-6 rounded-full bg-rose-500 flex items-center justify-center text-white text-[11px]"><i
+                  class="fas fa-circle-xmark"></i></span>
+              Declined invitations
+            </p>
+            <p class="text-rose-700">You have declined <span id="declinedEventsCount">0</span> event(s).</p>
+          </div>
+        </div>
+
+        <div id="eventsList" class="space-y-4 text-sm">
+          <!-- Event cards injected via JS -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer reused from student pages -->
+  <footer class="bg-gray-900 text-white py-16 mt-10">
+    <div class="container mx-auto px-6 lg:px-12">
+      <div class="grid lg:grid-cols-2 gap-12 mb-12">
+        <div>
+          <h3 class="text-2xl font-semibold mb-6 max-w-sm">Subscribe to our newsletter for the latest features and
+            updates.</h3>
+          <form class="flex flex-col sm:flex-row gap-4 mb-4" id="newsletterForm">
+            <input type="email" placeholder="Your Email Here" required
+              class="flex-1 px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-orange-primary transition-colors" />
+            <button type="submit"
+              class="bg-orange-primary text-white px-8 py-3 rounded-lg font-semibold hover:bg-orange-secondary transition-colors">Subscribe</button>
+          </form>
+          <p class="text-sm text-gray-400">By subscribing, you consent to our Privacy Policy and receive updates.</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div>
+            <h4 class="font-bold mb-6 uppercase tracking-wider">Useful Links</h4>
+            <ul class="space-y-3 text-sm">
+              <li><a href="../about.html" class="text-gray-400 hover:text-orange-primary transition-colors">About Us</a>
+              </li>
+              <li><a href="../contact.html" class="text-gray-400 hover:text-orange-primary transition-colors">Contact
+                  Us</a></li>
+              <li><a href="../events.html" class="text-gray-400 hover:text-orange-primary transition-colors">Events</a>
+              </li>
+              <li><a href="../resources.html"
+                  class="text-gray-400 hover:text-orange-primary transition-colors">Resources</a></li>
+              <li><a href="../index-tailwind.html"
+                  class="text-gray-400 hover:text-orange-primary transition-colors">Home</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="font-bold mb-6 uppercase tracking-wider">Company</h4>
+            <ul class="space-y-3 text-sm">
+              <li><a href="#" class="text-gray-400 hover:text-orange-primary transition-colors">Our Team</a></li>
+              <li><a href="#" class="text-gray-400 hover:text-orange-primary transition-colors">Leadership</a></li>
+              <li><a href="#" class="text-gray-400 hover:text-orange-primary transition-colors">Careers</a></li>
+              <li><a href="#" class="text-gray-400 hover:text-orange-primary transition-colors">Press</a></li>
+              <li><a href="#" class="text-gray-400 hover:text-orange-primary transition-colors">Purpose</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="font-bold mb-6 uppercase tracking-wider">Follow Us</h4>
+            <div class="space-y-3 text-sm">
+              <a href="#"
+                class="flex items-center space-x-2 text-gray-400 hover:text-orange-primary transition-colors"><i
+                  class="fab fa-facebook"></i><span>Facebook</span></a>
+              <a href="#"
+                class="flex items-center space-x-2 text-gray-400 hover:text-orange-primary transition-colors"><i
+                  class="fab fa-instagram"></i><span>Instagram</span></a>
+              <a href="#"
+                class="flex items-center space-x-2 text-gray-400 hover:text-orange-primary transition-colors"><i
+                  class="fab fa-twitter"></i><span>Twitter</span></a>
+              <a href="#"
+                class="flex items-center space-x-2 text-gray-400 hover:text-orange-primary transition-colors"><i
+                  class="fab fa-linkedin"></i><span>LinkedIn</span></a>
+              <a href="#"
+                class="flex items-center space-x-2 text-gray-400 hover:text-orange-primary transition-colors"><i
+                  class="fab fa-youtube"></i><span>YouTube</span></a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
+        <p class="text-gray-400 text-sm mb-4 md:mb-0">© MAHE INNOVATION CENTRE</p>
+        <div class="flex space-x-6 text-sm">
+          <a href="#" class="text-gray-400 hover:text-orange-primary transition-colors">Privacy Policy</a>
+          <a href="#" class="text-gray-400 hover:text-orange-primary transition-colors">Terms of Service</a>
+          <a href="#" class="text-gray-400 hover:text-orange-primary transition-colors">Cookie Settings</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Chatbot Widget -->
+  <link rel="stylesheet" href="../assets/chatbot.css">
+  <script src="../assets/chatbot.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      setTimeout(function () {
+        const defaultLauncher = document.getElementById('mahe-chatbot-launcher');
+        if (defaultLauncher) defaultLauncher.style.display = 'none';
+        const customLauncher = document.createElement('button');
+        customLauncher.className = 'fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-gradient-to-br from-orange-primary to-orange-secondary text-white shadow-xl flex items-center justify-center hover:scale-110 transition-all duration-300';
+        customLauncher.setAttribute('aria-label', 'Open Chatbot');
+        customLauncher.innerHTML = '<i class="fas fa-comments text-2xl"></i>';
+        customLauncher.onclick = function () { if (window.MaheChatbot) window.MaheChatbot.open(); };
+        document.body.appendChild(customLauncher);
+      }, 100);
+    });
+  </script>
+
+  <script src="/static/js/faculty-store.js"></script>
+  <script src="/static/js/faculty-dashboard.js"></script>
+</body>
+
+</html>

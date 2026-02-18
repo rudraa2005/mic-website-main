@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Feedback - MAHE Innovation Centre</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .liquid-glass { background: rgba(255,255,255,.1); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,.2); box-shadow: 0 8px 32px rgba(31,38,135,.37); }
+    .liquid-glass::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg, rgba(255,255,255,.4), rgba(255,255,255,.1)); border-radius:inherit; z-index:-1; }
+    .nav-link::before { content:""; position:absolute; bottom:-5px; left:50%; width:0; height:2px; background:linear-gradient(90deg,#ff6b35,#ff8c42); transition:all .3s ease; transform:translateX(-50%); border-radius:2px; }
+    .nav-link:hover::before { width:100%; }
+    .glass-card { 
+      background: rgba(255, 255, 255, 0.15); 
+      backdrop-filter: blur(10px); 
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      transition: all 0.3s ease;
+    }
+    .glass-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+    
+    /* Faculty Hover Card */
+    .faculty-card {
+      position: relative;
+    }
+    .faculty-popup {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      margin-top: 0.5rem;
+      width: 320px;
+      background: white;
+      border-radius: 1rem;
+      box-shadow: 0 15px 50px rgba(0,0,0,0.25);
+      padding: 1.5rem;
+      z-index: 100;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-10px);
+      transition: all 0.3s ease;
+      border: 2px solid rgba(255,107,53,0.3);
+    }
+    .faculty-card:hover .faculty-popup,
+    .faculty-card.active .faculty-popup {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    
+    /* Enhanced feedback cards - black tiles with orange hover pop-out */
+    .feedback-card {
+      position: relative;
+      background: #000000;
+      color: #ffffff;
+      border: 1px solid rgba(255,107,53,0.5);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+      transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                  box-shadow 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                  background 0.35s ease;
+      transform-origin: center;
+    }
+    .feedback-card:hover {
+      background: linear-gradient(135deg, #cc572b 0%, #e2743a 100%);
+      transform: translateY(-15px) scale(1.03);
+      box-shadow: 0 40px 80px rgba(0,0,0,0.8);
+    }
+    
+    /* Status badges */
+    .status-badge {
+      padding: 0.5rem 1rem;
+      border-radius: 2rem;
+      font-weight: 600;
+      font-size: 0.875rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    
+    /* Query Sidebar */
+    .query-sidebar {
+      position: fixed;
+      right: -400px;
+      top: 0;
+      width: 400px;
+      height: 100vh;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      box-shadow: -5px 0 20px rgba(0,0,0,0.3);
+      transition: right 0.3s ease-in-out;
+      z-index: 1000;
+      overflow-y: auto;
+    }
+    .query-sidebar.open {
+      right: 0;
+    }
+    
+    /* Enhanced Dropdown */
+    .custom-select {
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23ff6b35' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+      background-position: right 0.75rem center;
+      background-repeat: no-repeat;
+      background-size: 1.25em 1.25em;
+      padding-right: 2.5rem;
+      cursor: pointer;
+    }
+    .custom-select:hover {
+      border-color: #ff8c42;
+    }
+    .custom-select:focus {
+      outline: none;
+      border-color: #ff6b35;
+      box-shadow: 0 0 0 3px rgba(255,107,53,0.1);
+    }
+    .custom-select option {
+      background: #1a1a2e;
+      color: white;
+      padding: 0.5rem;
+    }
+
+    /* Dark Mode Styles */
+    body.dark-mode {
+      background: #0f172a;
+      color: #e2e8f0;
+    }
+    body.dark-mode .bg-gray-50,
+    body.dark-mode .bg-gray-100,
+    body.dark-mode .bg-gray-200 {
+      background: #1e293b !important;
+    }
+    body.dark-mode .bg-gray-900 {
+      background: #0f172a !important;
+    }
+    body.dark-mode .text-gray-800,
+    body.dark-mode .text-gray-900 {
+      color: #e2e8f0 !important;
+    }
+    body.dark-mode .text-gray-600,
+    body.dark-mode .text-gray-700 {
+      color: #cbd5e1 !important;
+    }
+    body.dark-mode .text-gray-500 {
+      color: #94a3b8 !important;
+    }
+    body.dark-mode .text-gray-400 {
+      color: #94a3b8 !important;
+    }
+    body.dark-mode .text-white {
+      color: #f8fafc !important;
+    }
+    body.dark-mode .text-black {
+      color: #f8fafc !important;
+    }
+    body.dark-mode .liquid-glass {
+      background: rgba(30, 41, 59, 0.8) !important;
+    }
+    body.dark-mode .nav-link {
+      color: #cbd5e1 !important;
+    }
+    body.dark-mode .nav-link:hover {
+      color: #ff6b35 !important;
+    }
+    body.dark-mode .bg-white {
+      background: #1e293b !important;
+    }
+    body.dark-mode .bg-gray-800 {
+      background: #1e293b !important;
+    }
+    body.dark-mode .border-gray-800 {
+      border-color: #1e293b !important;
+    }
+    body.dark-mode .border-gray-700 {
+      border-color: #334155 !important;
+    }
+    body.dark-mode .glass-card {
+      background: rgba(30, 41, 59, 0.8) !important;
+    }
+    body.dark-mode .query-sidebar {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%) !important;
+    }
+  </style>
+  <script>
+    tailwind.config = { theme: { extend: { colors: { 'orange-primary':'#ff6b35','orange-secondary':'#ff8c42' }, fontFamily: { inter:['Inter','sans-serif'] } } } }
+  </script>
+</head>
+<body class="bg-gray-200 font-inter overflow-x-hidden">
+  <!-- Navigation -->
+  <nav class="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-11/12 max-w-6xl">
+    <div class="liquid-glass rounded-full px-6 py-3 relative">
+      <div class="flex justify-between items-center">
+        <div class="flex items-center space-x-2">
+          <div class="w-8 h-8 bg-gradient-to-br from-orange-primary to-orange-secondary rounded-lg flex items-center justify-center"><span class="text-white font-bold text-sm">M</span></div>
+          <span class="text-gray-800 font-semibold text-lg">MAHE</span>
+        </div>
+        <div class="hidden md:flex items-center space-x-8 ml-auto">
+          <a href="index-tailwind.html" class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors font-medium">Home</a>
+          <a href="about.html" class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors font-medium">About Us</a>
+          <a href="events.html" class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors font-medium">Events</a>
+          <a href="resources.html" class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors font-medium">Resources</a>
+          <a href="contact.html" class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors font-medium">Contact</a>
+        </div>
+        <div class="hidden md:flex items-center space-x-4 ml-4">
+          <a href="profile.html" class="w-10 h-10 rounded-full bg-orange-primary text-white flex items-center justify-center">
+            <i class="fas fa-user"></i>
+          </a>
+        </div>
+        <button class="md:hidden text-gray-700" id="mobile-menu-btn"><i class="fas fa-bars text-xl"></i></button>
+      </div>
+      <!-- Mobile Menu -->
+      <div id="mobile-menu" class="hidden md:hidden mt-4 pb-2">
+        <div class="flex flex-col space-y-4">
+          <a href="index-tailwind.html" class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors font-medium">Home</a>
+          <a href="about.html" class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors font-medium">About Us</a>
+          <a href="events.html" class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors font-medium">Events</a>
+          <a href="resources.html" class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors font-medium">Resources</a>
+          <a href="contact.html" class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors font-medium">Contact</a>
+          <a href="profile.html" class="w-10 h-10 rounded-full bg-orange-primary text-white flex items-center justify-center">
+            <i class="fas fa-user"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <section class="pt-32 pb-24 bg-gray-50 min-h-screen">
+    <div class="container mx-auto px-6 lg:px-12">
+      <div class="max-w-6xl mx-auto">
+        <!-- Header -->
+        <div class="mb-10">
+          <div class="flex items-center justify-between mb-6">
+            <div>
+              <h1 class="text-5xl font-black text-gray-900 mb-3 bg-gradient-to-r from-orange-primary to-orange-secondary bg-clip-text text-transparent">Faculty Feedback</h1>
+              <p class="text-lg text-gray-600">Reviews and recommendations from faculty members</p>
+            </div>
+            <button id="openQuerySidebar" class="bg-gradient-to-r from-orange-primary to-orange-secondary text-white px-8 py-4 rounded-xl font-semibold hover:shadow-lg transition-all transform hover:scale-105 flex items-center space-x-2 shadow-md">
+              <i class="fas fa-question-circle text-xl"></i>
+              <span>Ask Query</span>
+            </button>
+          </div>
+          <div class="flex items-center space-x-4 text-sm text-gray-600">
+            <div class="flex items-center space-x-2">
+              <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+              <span>Approved</span>
+            </div>
+            <div class="flex items-center space-x-2">
+              <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+              <span>Under Review</span>
+            </div>
+            <div class="flex items-center space-x-2">
+              <div class="w-3 h-3 bg-gray-400 rounded-full"></div>
+              <span>Pending</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Feedback Cards -->
+        <div id="feedbackList" class="space-y-6">
+          <div class="text-center py-12">
+            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-primary mx-auto"></div>
+            <p class="text-gray-600 mt-4">Loading feedback...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Query Sidebar -->
+  <div class="query-sidebar" id="querySidebar">
+    <div class="p-6 border-b border-gray-700 bg-gray-800">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+          <i class="fas fa-question-circle text-orange-primary text-2xl"></i>
+          <div>
+            <h3 class="text-white font-semibold">Ask a Query</h3>
+            <p class="text-xs text-gray-400">Get clarification on feedback</p>
+          </div>
+        </div>
+        <button id="closeQuerySidebar" class="text-white hover:text-gray-300">
+          <i class="fas fa-times text-xl"></i>
+        </button>
+      </div>
+    </div>
+    <div class="p-6">
+      <form id="queryForm" class="space-y-4">
+        <div>
+          <label class="block text-white text-sm font-semibold mb-2 flex items-center">
+            <i class="fas fa-user-tie text-orange-primary mr-2"></i>
+            Select Faculty
+          </label>
+          <select id="facultySelect" class="custom-select w-full px-4 py-3 bg-gray-800 border-2 border-gray-700 rounded-lg text-white hover:border-orange-primary transition-colors">
+            <option value="">Choose a faculty member...</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-white text-sm font-semibold mb-2 flex items-center">
+            <i class="fas fa-comment-dots text-orange-primary mr-2"></i>
+            Related Feedback
+          </label>
+          <select id="feedbackSelect" class="custom-select w-full px-4 py-3 bg-gray-800 border-2 border-gray-700 rounded-lg text-white hover:border-orange-primary transition-colors">
+            <option value="">Select feedback...</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-white text-sm font-semibold mb-2 flex items-center">
+            <i class="fas fa-question-circle text-orange-primary mr-2"></i>
+            Your Query
+          </label>
+          <textarea id="queryInput" rows="6" placeholder="Type your question here..." class="w-full px-4 py-3 bg-gray-800 border-2 border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-orange-primary focus:ring-2 focus:ring-orange-primary/20 resize-none transition-all"></textarea>
+        </div>
+        <div>
+          <label class="block text-white text-sm font-semibold mb-2 flex items-center">
+            <i class="fas fa-flag text-orange-primary mr-2"></i>
+            Priority
+          </label>
+          <select id="prioritySelect" class="custom-select w-full px-4 py-3 bg-gray-800 border-2 border-gray-700 rounded-lg text-white hover:border-orange-primary transition-colors">
+            <option value="normal">Normal</option>
+            <option value="high">High</option>
+            <option value="urgent">Urgent</option>
+          </select>
+        </div>
+        <button type="submit" class="w-full bg-orange-primary text-white py-3 rounded-lg font-semibold hover:bg-orange-secondary transition-colors">
+          <i class="fas fa-paper-plane mr-2"></i>Send Query
+        </button>
+      </form>
+      
+      <!-- Previous Queries -->
+      <div class="mt-8">
+        <h4 class="text-white font-semibold mb-4">Previous Queries</h4>
+        <div id="queriesList" class="space-y-3">
+          <div class="text-center py-6 text-gray-400 text-sm">Loading queries...</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-white py-16">
+    <div class="container mx-auto px-6 lg:px-12">
+      <div class="grid lg:grid-cols-2 gap-12 mb-12">
+        <div>
+          <h3 class="text-2xl font-semibold mb-6 max-w-sm">Subscribe to our newsletter for the latest features and updates.</h3>
+          <form class="flex flex-col sm:flex-row gap-4 mb-4" id="newsletterForm">
+            <input type="email" placeholder="Your Email Here" required class="flex-1 px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-orange-primary transition-colors" />
+            <button type="submit" class="bg-orange-primary text-white px-8 py-3 rounded-lg font-semibold hover:bg-orange-secondary transition-colors">Subscribe</button>
+          </form>
+          <p class="text-sm text-gray-400">By subscribing, you consent to our Privacy Policy and receive updates.</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div>
+            <h4 class="font-bold mb-6 uppercase tracking-wider">Useful Links</h4>
+            <ul class="space-y-3">
+              <li><a href="about.html" class="text-gray-400 hover:text-orange-primary transition-colors">About Us</a></li>
+              <li><a href="contact.html" class="text-gray-400 hover:text-orange-primary transition-colors">Contact Us</a></li>
+              <li><a href="events.html" class="text-gray-400 hover:text-orange-primary transition-colors">Events</a></li>
+              <li><a href="resources.html" class="text-gray-400 hover:text-orange-primary transition-colors">Resources</a></li>
+              <li><a href="index-tailwind.html" class="text-gray-400 hover:text-orange-primary transition-colors">Home</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="font-bold mb-6 uppercase tracking-wider">Company</h4>
+            <ul class="space-y-3">
+              <li><a href="#" class="text-gray-400 hover:text-orange-primary transition-colors">Our Team</a></li>
+              <li><a href="#" class="text-gray-400 hover:text-orange-primary transition-colors">Leadership</a></li>
+              <li><a href="#" class="text-gray-400 hover:text-orange-primary transition-colors">Careers</a></li>
+              <li><a href="#" class="text-gray-400 hover:text-orange-primary transition-colors">Press</a></li>
+              <li><a href="#" class="text-gray-400 hover:text-orange-primary transition-colors">Purpose</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="font-bold mb-6 uppercase tracking-wider">Follow Us</h4>
+            <div class="space-y-3">
+              <a href="#" class="flex items-center space-x-2 text-gray-400 hover:text-orange-primary transition-colors"><i class="fab fa-facebook"></i><span>Facebook</span></a>
+              <a href="#" class="flex items-center space-x-2 text-gray-400 hover:text-orange-primary transition-colors"><i class="fab fa-instagram"></i><span>Instagram</span></a>
+              <a href="#" class="flex items-center space-x-2 text-gray-400 hover:text-orange-primary transition-colors"><i class="fab fa-twitter"></i><span>Twitter</span></a>
+              <a href="#" class="flex items-center space-x-2 text-gray-400 hover:text-orange-primary transition-colors"><i class="fab fa-linkedin"></i><span>LinkedIn</span></a>
+              <a href="#" class="flex items-center space-x-2 text-gray-400 hover:text-orange-primary transition-colors"><i class="fab fa-youtube"></i><span>YouTube</span></a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
+        <p class="text-gray-400 text-sm mb-4 md:mb-0">© MAHE INNOVATION CENTRE</p>
+        <div class="flex space-x-6">
+          <a href="#" class="text-gray-400 hover:text-orange-primary transition-colors text-sm">Privacy Policy</a>
+          <a href="#" class="text-gray-400 hover:text-orange-primary transition-colors text-sm">Terms of Service</a>
+          <a href="#" class="text-gray-400 hover:text-orange-primary transition-colors text-sm">Cookie Settings</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile menu toggle
+    document.getElementById('mobile-menu-btn')?.addEventListener('click', function() {
+      const menu = document.getElementById('mobile-menu');
+      menu.classList.toggle('hidden');
+    });
+
+    // Faculty card click handling (delegated)
+    document.addEventListener('click', function(e) {
+      const facultyHeader = e.target.closest('.faculty-card h3');
+      if (facultyHeader) {
+        const card = facultyHeader.closest('.faculty-card');
+        document.querySelectorAll('.faculty-card').forEach(c => {
+          if (c !== card) c.classList.remove('active');
+        });
+        card.classList.toggle('active');
+        return;
+      }
+      if (!e.target.closest('.faculty-card')) {
+        document.querySelectorAll('.faculty-card').forEach(c => c.classList.remove('active'));
+      }
+    });
+
+    // Query sidebar
+    const querySidebar = document.getElementById('querySidebar');
+    const openQuerySidebar = document.getElementById('openQuerySidebar');
+    const closeQuerySidebar = document.getElementById('closeQuerySidebar');
+
+    openQuerySidebar.addEventListener('click', () => {
+      querySidebar.classList.add('open');
+    });
+
+    closeQuerySidebar.addEventListener('click', () => {
+      querySidebar.classList.remove('open');
+    });
+
+    // Newsletter form
+    document.getElementById('newsletterForm')?.addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert('Thank you for subscribing!');
+      this.reset();
+    });
+
+    // Map status to badge
+    function renderStatusBadge(status) {
+      const s = (status || '').toLowerCase();
+      if (s === 'approved') return '<span class="status-badge bg-green-100 text-green-700">Approved</span>';
+      if (s === 'submitted' || s === 'under review') return '<span class="status-badge bg-yellow-100 text-yellow-700">Under Review</span>';
+      return '<span class="status-badge bg-gray-200 text-gray-700">Pending</span>';
+    }
+
+    // Format date
+    function formatRelative(dateString) {
+      if (!dateString) return 'Just now';
+      const date = new Date(dateString);
+      const diff = Date.now() - date.getTime();
+      const mins = Math.floor(diff / 60000);
+      if (mins < 1) return 'Just now';
+      if (mins < 60) return `${mins} min${mins === 1 ? '' : 's'} ago`;
+      const hours = Math.floor(mins / 60);
+      if (hours < 24) return `${hours} hour${hours === 1 ? '' : 's'} ago`;
+      const days = Math.floor(hours / 24);
+      if (days < 7) return `${days} day${days === 1 ? '' : 's'} ago`;
+      return date.toLocaleDateString();
+    }
+
+    // Render feedback cards
+    function renderFeedbacks(feedbacks) {
+      const container = document.getElementById('feedbackList');
+      if (!feedbacks || feedbacks.length === 0) {
+        container.innerHTML = `
+          <div class="text-center py-12">
+            <i class="fas fa-inbox text-5xl text-gray-400 mb-4"></i>
+            <p class="text-gray-600 text-lg">No feedback available yet</p>
+          </div>
+        `;
+        return;
+      }
+
+      // Build faculty options for query form
+      const facultySelect = document.getElementById('facultySelect');
+      const feedbackSelect = document.getElementById('feedbackSelect');
+      facultySelect.innerHTML = '<option value="">Choose a faculty member...</option>';
+      feedbackSelect.innerHTML = '<option value="">Select feedback...</option>';
+
+      const uniqueFaculty = new Map();
+      feedbacks.forEach(fb => {
+        if (fb.faculty_id && !uniqueFaculty.has(fb.faculty_id)) {
+          uniqueFaculty.set(fb.faculty_id, fb.faculty_name || 'Faculty');
+        }
+      });
+      uniqueFaculty.forEach((name, id) => {
+        const opt = document.createElement('option');
+        opt.value = id;
+        opt.textContent = name;
+        facultySelect.appendChild(opt);
+      });
+
+      feedbacks.forEach(fb => {
+        const opt = document.createElement('option');
+        opt.value = fb.id || fb.feedback_id || '';
+        opt.textContent = fb.faculty_name ? `Feedback from ${fb.faculty_name}` : 'Feedback';
+        feedbackSelect.appendChild(opt);
+      });
+
+      const gradients = [
+        { from: 'from-orange-primary', to: 'to-orange-secondary', ring: 'ring-orange-100' },
+        { from: 'from-purple-500', to: 'to-purple-600', ring: 'ring-purple-100' },
+        { from: 'from-blue-500', to: 'to-blue-600', ring: 'ring-blue-100' },
+        { from: 'from-green-500', to: 'to-green-600', ring: 'ring-green-100' }
+      ];
+
+      function pickGradient(index) {
+        return gradients[index % gradients.length];
+      }
+
+      container.innerHTML = feedbacks.map((fb, idx) => {
+        const grad = pickGradient(idx);
+        const initials = (fb.faculty_name || 'Faculty').split(' ').map(p => p[0]).join('').slice(0, 2).toUpperCase();
+        const strengths = (fb.strengths || []).map(item => `<li class="flex items-start"><span class="text-blue-500 mr-2">✓</span>${item}</li>`).join('');
+        const recommendations = (fb.recommendations || []).map(item => `<li class="flex items-start"><span class="text-orange-500 mr-2">→</span>${item}</li>`).join('');
+
+        return `
+          <div class="feedback-card rounded-3xl p-8 mb-6">
+            <div class="flex items-start justify-between mb-6">
+              <div class="flex items-center space-x-5">
+                <div class="w-20 h-20 bg-gradient-to-br ${grad.from} ${grad.to} rounded-full flex items-center justify-center shadow-lg ring-4 ${grad.ring}">
+                  <span class="text-white font-bold text-2xl">${initials}</span>
+                </div>
+                <div class="faculty-card">
+                  <h3 class="font-bold text-white text-xl cursor-pointer hover:text-orange-primary transition-colors mb-1">
+                    ${fb.faculty_name || 'Faculty Member'}
+                  </h3>
+                  <p class="text-sm text-gray-300 mb-2">${fb.faculty_title || 'Faculty'}</p>
+                  <div class="flex items-center space-x-1">
+                    <span class="text-yellow-500"><i class="fas fa-star text-sm"></i></span>
+                    <span class="text-yellow-500"><i class="fas fa-star text-sm"></i></span>
+                    <span class="text-yellow-500"><i class="fas fa-star text-sm"></i></span>
+                    <span class="text-yellow-500"><i class="fas fa-star text-sm"></i></span>
+                    <span class="text-yellow-500"><i class="fas fa-star-half-alt text-sm"></i></span>
+                    <span class="ml-2 text-gray-200 font-semibold">${fb.rating || '4.5'}</span>
+                  </div>
+                  <div class="faculty-popup">
+                    <div class="flex items-center space-x-3 mb-4 pb-4 border-b">
+                      <div class="w-12 h-12 bg-gradient-to-br ${grad.from} ${grad.to} rounded-full flex items-center justify-center">
+                        <span class="text-white font-bold">${initials}</span>
+                      </div>
+                      <div>
+                        <h4 class="font-bold text-gray-800">${fb.faculty_name || 'Faculty Member'}</h4>
+                        <p class="text-xs text-gray-500">${fb.faculty_title || 'Faculty'}</p>
+                      </div>
+                    </div>
+                    <div class="space-y-2 text-sm">
+                      <div class="flex items-center space-x-2">
+                        <i class="fas fa-briefcase text-orange-primary"></i>
+                        <span class="text-gray-700"><strong>Position:</strong> ${fb.faculty_title || '—'}</span>
+                      </div>
+                      <div class="flex items-center space-x-2">
+                        <i class="fas fa-graduation-cap text-orange-primary"></i>
+                        <span class="text-gray-700"><strong>Field:</strong> ${fb.faculty_field || '—'}</span>
+                      </div>
+                      <div class="flex items-center space-x-2">
+                        <i class="fas fa-envelope text-orange-primary"></i>
+                        <span class="text-gray-700"><strong>Email:</strong> ${fb.faculty_email || '—'}</span>
+                      </div>
+                      <div class="flex items-center space-x-2">
+                        <i class="fas fa-phone text-orange-primary"></i>
+                        <span class="text-gray-700"><strong>Phone:</strong> ${fb.faculty_phone || '—'}</span>
+                      </div>
+                      <div class="flex items-center space-x-2">
+                        <i class="fas fa-building text-orange-primary"></i>
+                        <span class="text-gray-700"><strong>Department:</strong> ${fb.faculty_department || '—'}</span>
+                      </div>
+                      <div class="flex items-center space-x-2">
+                        <i class="fas fa-award text-orange-primary"></i>
+                        <span class="text-gray-700"><strong>Experience:</strong> ${fb.faculty_experience || '—'}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="flex flex-col items-end space-y-2">
+                ${renderStatusBadge(fb.status)}
+                <span class="text-xs text-gray-500"><i class="far fa-clock mr-1"></i>${formatRelative(fb.updated_at || fb.created_at)}</span>
+              </div>
+            </div>
+            <div class="bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-6 mb-6 border border-gray-200">
+              <h4 class="font-semibold text-gray-800 mb-2">Overall Feedback</h4>
+              <p class="text-gray-700 leading-relaxed">
+                ${fb.overall_feedback || 'No feedback text provided yet.'}
+              </p>
+            </div>
+            <div class="grid md:grid-cols-2 gap-6">
+              <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-5 border-l-4 border-blue-500 shadow-sm">
+                <h4 class="font-bold text-blue-800 mb-3 flex items-center"><i class="fas fa-thumbs-up mr-2 text-blue-600"></i>Strengths</h4>
+                <ul class="text-sm text-blue-700 space-y-2">
+                  ${strengths || '<li class="text-blue-700">Not provided</li>'}
+                </ul>
+              </div>
+              <div class="bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl p-5 border-l-4 border-orange-500 shadow-sm">
+                <h4 class="font-bold text-orange-800 mb-3 flex items-center"><i class="fas fa-lightbulb mr-2 text-orange-600"></i>Recommendations</h4>
+                <ul class="text-sm text-orange-700 space-y-2">
+                  ${recommendations || '<li class="text-orange-700">Not provided</li>'}
+                </ul>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Render queries
+    function renderQueries(queries) {
+      const container = document.getElementById('queriesList');
+      if (!queries || queries.length === 0) {
+        container.innerHTML = '<div class="text-center py-6 text-gray-400 text-sm">No queries yet</div>';
+        return;
+      }
+      container.innerHTML = queries.map(q => {
+        const status = (q.status || '').toLowerCase();
+        const statusBadge = status === 'answered'
+          ? '<span class="px-2 py-1 bg-green-500/20 text-green-400 rounded text-xs">Answered</span>'
+          : '<span class="px-2 py-1 bg-yellow-500/20 text-yellow-400 rounded text-xs">Pending</span>';
+        return `
+          <div class="bg-gray-800 rounded-lg p-4 border border-gray-700">
+            <div class="flex items-start justify-between mb-2">
+              <span class="text-sm font-semibold text-white">To: ${q.faculty_name || 'Faculty'}</span>
+              <span class="text-xs text-gray-400">${formatRelative(q.created_at)}</span>
+            </div>
+            <p class="text-sm text-gray-300 mb-2">${q.query || q.question || ''}</p>
+            ${statusBadge}
+            ${q.response ? `<div class="mt-3 text-xs text-gray-400"><strong class="text-white">Response:</strong> ${q.response}</div>` : ''}
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Load feedbacks and queries
+    async function loadFeedbackPageData() {
+      const token = localStorage.getItem('authToken');
+      if (!token) {
+        window.location.href = 'login.html';
+        return;
+      }
+
+      try {
+        const [feedbackRes, queryRes] = await Promise.all([
+          fetch('/api/feedbacks', { headers: { 'Authorization': `Bearer ${token}` } }),
+          fetch('/api/queries/mine', { headers: { 'Authorization': `Bearer ${token}` } })
+        ]);
+
+        if (feedbackRes.ok) {
+          const feedbacks = await feedbackRes.json();
+          renderFeedbacks(feedbacks);
+        } else {
+          throw new Error('Failed to load feedbacks');
+        }
+
+        if (queryRes.ok) {
+          const queries = await queryRes.json();
+          renderQueries(queries);
+        } else {
+          renderQueries([]);
+        }
+      } catch (err) {
+        console.error('Feedback page load error:', err);
+        document.getElementById('feedbackList').innerHTML = `
+          <div class="text-center py-12">
+            <i class="fas fa-exclamation-triangle text-5xl text-red-500 mb-4"></i>
+            <p class="text-gray-600 text-lg">Failed to load feedback</p>
+            <p class="text-gray-500 text-sm">${err.message}</p>
+          </div>
+        `;
+      }
+    }
+
+    // Query form submit
+    document.getElementById('queryForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const token = localStorage.getItem('authToken');
+      if (!token) {
+        alert('Please log in to submit a query.');
+        window.location.href = 'login.html';
+        return;
+      }
+
+      const facultyId = document.getElementById('facultySelect').value;
+      const feedbackId = document.getElementById('feedbackSelect').value;
+      const queryText = document.getElementById('queryInput').value.trim();
+      const priority = document.getElementById('prioritySelect').value;
+
+      if (!facultyId || !queryText) {
+        alert('Please select a faculty and enter your query.');
+        return;
+      }
+
+      try {
+        const res = await fetch('/api/queries', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            faculty_id: facultyId,
+            feedback_id: feedbackId || null,
+            query: queryText,
+            priority
+          })
+        });
+
+        if (res.ok) {
+          this.reset();
+          querySidebar.classList.remove('open');
+          await loadFeedbackPageData();
+        } else {
+          const errText = await res.text();
+          alert(`Failed to send query: ${errText || 'Unknown error'}`);
+        }
+      } catch (err) {
+        alert(`Failed to send query: ${err.message}`);
+      }
+    });
+
+    // Load data on page load
+    loadFeedbackPageData();
+
+    // Dark mode initialization
+    (function() {
+      const savedTheme = localStorage.getItem('theme');
+      const savedSystemTheme = localStorage.getItem('systemTheme');
+      const body = document.body;
+
+      function applySystemTheme() {
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          body.classList.add('dark-mode');
+        } else {
+          body.classList.remove('dark-mode');
+        }
+      }
+
+      if (savedSystemTheme === 'true') {
+        applySystemTheme();
+        if (window.matchMedia) {
+          window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applySystemTheme);
+        }
+      } else if (savedTheme === 'dark') {
+        body.classList.add('dark-mode');
+      }
+    })();
+  </script>
+  <!-- Chatbot Icon - Fixed Bottom Right -->
+  <!-- Chatbot Widget -->
+  <link rel="stylesheet" href="assets/chatbot.css">
+  <script src="assets/chatbot.js"></script>
+  <script>
+      document.addEventListener('DOMContentLoaded', function() {
+          setTimeout(function() {
+              const defaultLauncher = document.getElementById('mahe-chatbot-launcher');
+              if (defaultLauncher) defaultLauncher.style.display = 'none';
+              const customLauncher = document.createElement('button');
+              customLauncher.className = 'fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-gradient-to-br from-orange-primary to-orange-secondary text-white shadow-xl flex items-center justify-center hover:scale-110 transition-all duration-300';
+              customLauncher.setAttribute('aria-label', 'Open Chatbot');
+              customLauncher.innerHTML = '<i class="fas fa-comments text-2xl"></i>';
+              customLauncher.onclick = function() { if (window.MaheChatbot) window.MaheChatbot.open(); };
+              document.body.appendChild(customLauncher);
+          }, 100);
+      });
+  </script>
+</body>
+</html>
+

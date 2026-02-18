@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About Us - MAHE Innovation Centre</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+
+    .liquid-glass {
+      background: rgba(255, 255, 255, .1);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, .2);
+      box-shadow: 0 8px 32px rgba(31, 38, 135, .37);
+    }
+
+    .liquid-glass::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255, 255, 255, .4), rgba(255, 255, 255, .1));
+      border-radius: inherit;
+      z-index: -1;
+    }
+
+    .nav-link::before {
+      content: "";
+      position: absolute;
+      bottom: -5px;
+      left: 50%;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #ff6b35, #ff8c42);
+      transition: all .3s ease;
+      transform: translateX(-50%);
+      border-radius: 2px;
+    }
+
+    .nav-link:hover::before {
+      width: 100%;
+    }
+
+    .orange-blob {
+      background: linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%);
+      border-radius: 30% 70% 70% 30%/30% 30% 70% 70%;
+    }
+
+    /* Circular ring around the word "Help" */
+    .scribble {
+      position: relative;
+      display: inline-block;
+      padding: 0 .15em;
+    }
+
+    .scribble::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 120%;
+      height: 120%;
+      border: 3px solid #ff6b35;
+      border-radius: 50%;
+      pointer-events: none;
+      opacity: 0.9;
+    }
+
+    /* Dark Mode Styles */
+    body.dark-mode {
+      background: #0f172a;
+      color: #e2e8f0;
+    }
+
+    body.dark-mode .bg-gray-50,
+    body.dark-mode .bg-gray-100,
+    body.dark-mode .bg-gray-200 {
+      background: #1e293b !important;
+    }
+
+    body.dark-mode .bg-gray-900 {
+      background: #0f172a !important;
+    }
+
+    /* About section contrast in dark mode */
+    body.dark-mode .about-section {
+      background: #0b1225 !important;
+    }
+
+    body.dark-mode .about-bullets h3 {
+      color: #f8fafc !important;
+    }
+
+    body.dark-mode .about-bullets p {
+      color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .text-gray-800,
+    body.dark-mode .text-gray-900 {
+      color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .text-gray-600,
+    body.dark-mode .text-gray-700 {
+      color: #cbd5e1 !important;
+    }
+
+    body.dark-mode .text-gray-500 {
+      color: #94a3b8 !important;
+    }
+
+    body.dark-mode .text-gray-400 {
+      color: #94a3b8 !important;
+    }
+
+    body.dark-mode .text-white {
+      color: #f8fafc !important;
+    }
+
+    body.dark-mode .text-black {
+      color: #f8fafc !important;
+    }
+
+    body.dark-mode .liquid-glass {
+      background: rgba(30, 41, 59, 0.8) !important;
+    }
+
+    body.dark-mode .nav-link {
+      color: #cbd5e1 !important;
+    }
+
+    body.dark-mode .nav-link:hover {
+      color: #ff6b35 !important;
+    }
+
+    body.dark-mode .bg-white {
+      background: #1e293b !important;
+    }
+
+    body.dark-mode .bg-gray-800 {
+      background: #1e293b !important;
+    }
+
+    body.dark-mode .border-gray-800 {
+      border-color: #1e293b !important;
+    }
+
+    body.dark-mode .border-gray-700 {
+      border-color: #334155 !important;
+    }
+
+    /* Chatbot widget */
+    .chatbot-panel {
+      box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.45);
+      background: #e7e3dd;
+      background-image:
+        radial-gradient(220px at 8% 20%, rgba(255, 115, 29, 0.9) 0%, rgba(255, 115, 29, 0.75) 60%, transparent 61%),
+        radial-gradient(180px at 92% 8%, rgba(247, 242, 234, 0.95) 0%, rgba(247, 242, 234, 0.85) 70%, transparent 71%),
+        radial-gradient(200px at 90% 85%, rgba(255, 140, 66, 0.9) 0%, rgba(255, 140, 66, 0.8) 65%, transparent 66%),
+        linear-gradient(180deg, #e7e3dd 0%, #e7e3dd 100%);
+    }
+
+    .chatbot-header {
+      background: #0f172a;
+    }
+
+    .chatbot-input-wrap {
+      background: linear-gradient(135deg, #ff7a1a, #ff8c42);
+      box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.3);
+    }
+
+    .chatbot-input-field {
+      background: #f8f7f4;
+      color: #0f172a;
+    }
+
+    .chatbot-input-field::placeholder {
+      color: #a1a1aa;
+    }
+
+    .chatbot-pill {
+      background: rgba(0, 0, 0, 0.08);
+      border: 1px solid rgba(0, 0, 0, 0.12);
+    }
+
+    body.dark-mode .chatbot-panel {
+      background: #0f172a;
+      background-image:
+        radial-gradient(220px at 8% 20%, rgba(255, 115, 29, 0.75) 0%, rgba(255, 115, 29, 0.55) 60%, transparent 61%),
+        radial-gradient(180px at 92% 8%, rgba(30, 41, 59, 0.9) 0%, rgba(30, 41, 59, 0.8) 70%, transparent 71%),
+        radial-gradient(200px at 90% 85%, rgba(255, 140, 66, 0.7) 0%, rgba(255, 140, 66, 0.55) 65%, transparent 66%),
+        linear-gradient(180deg, #0f172a 0%, #0f172a 100%);
+      border-color: #334155 !important;
+      color: #e2e8f0;
+    }
+
+    body.dark-mode .chatbot-header {
+      background: #0b1120;
+    }
+
+    body.dark-mode .chatbot-input-wrap {
+      background: linear-gradient(135deg, #ff7a1a, #ff8c42);
+    }
+
+    body.dark-mode .chatbot-input-field {
+      background: #0b1225;
+      color: #e2e8f0;
+    }
+
+    body.dark-mode .chatbot-input-field::placeholder {
+      color: #94a3b8;
+    }
+
+    body.dark-mode .chatbot-pill {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(255, 255, 255, 0.12);
+    }
+  </style>
+  <script>
+    tailwind.config = { theme: { extend: { colors: { 'orange-primary': '#ff6b35', 'orange-secondary': '#ff8c42' }, fontFamily: { inter: ['Inter', 'sans-serif'] } } } }
+  </script>
+</head>
+
+<body class="bg-gray-200 font-inter overflow-x-hidden">
+  <nav class="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-11/12 max-w-6xl">
+    <div class="liquid-glass rounded-full px-6 py-3 relative">
+      <div class="flex justify-between items-center">
+        <div class="flex items-center space-x-2">
+          <div
+            class="w-8 h-8 bg-gradient-to-br from-orange-primary to-orange-secondary rounded-lg flex items-center justify-center">
+            <span class="text-white font-bold text-sm">M</span>
+          </div>
+          <span class="text-gray-800 font-semibold text-lg">MAHE</span>
+        </div>
+        <div class="hidden md:flex items-center space-x-8 ml-auto">
+          <a href="/index"
+            class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors font-medium">Home</a>
+          <a href="/about" class="nav-link relative text-orange-primary font-medium">About Us</a>
+          <a href="/events"
+            class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors font-medium">Events</a>
+          <a href="/resources"
+            class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors font-medium">Resources</a>
+          <a href="/contact"
+            class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors font-medium">Contact</a>
+          <a href="profile.html"
+            class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-600 hover:bg-orange-primary hover:text-white transition">
+            <i class="fas fa-user"></i>
+          </a>
+        </div>
+        <button class="md:hidden text-gray-700" id="mobile-menu-btn"><i class="fas fa-bars text-xl"></i></button>
+      </div>
+      <!-- Mobile Menu -->
+      <div id="mobile-menu" class="hidden md:hidden mt-4 pb-2">
+        <div class="flex flex-col space-y-4">
+          <a href="/"
+            class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors font-medium">Home</a>
+          <a href="/about" class="nav-link relative text-orange-primary font-medium">About Us</a>
+          <a href="/events"
+            class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors font-medium">Events</a>
+          <a href="/resources"
+            class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors font-medium">Resources</a>
+          <a href="/contact"
+            class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors font-medium">Contact</a>
+        </div>
+      </div>
+    </div>
+    </div>
+  </nav>
+
+  <!-- HERO: full-width image with headline -->
+  <header class="relative h-[62vh] min-h-[420px] flex items-end mt-20">
+    <!-- Replace with your own upload URL -->
+    <!-- HERO IMAGE: replace the src below -->
+    <div class="absolute inset-0 w-full h-full bg-gradient-to-br from-orange-primary/30 to-orange-secondary/30"></div>
+    <div class="absolute inset-0 bg-black/35"></div>
+    <div class="container mx-auto px-6 lg:px-12 pb-10 relative z-10">
+      <h1 class="text-white/95 text-3xl md:text-5xl font-semibold leading-snug max-w-2xl drop-shadow">
+        Proud to <span class="scribble">Help</span>, start and grow
+      </h1>
+    </div>
+  </header>
+
+  <!-- ABOUT SECTION with bullets and cards -->
+  <section class="about-section bg-[#e6e3db] py-16">
+    <div class="container mx-auto px-6 lg:px-12 max-w-6xl">
+      <div class="mb-10">
+        <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight">ABOUT US</h2>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-10 items-start">
+        <!-- Left bullets -->
+        <div id="aboutBullets" class="space-y-8 about-bullets"></div>
+
+        <!-- Right staggered cards mimicking screenshot -->
+
+        <div id="aboutCards" class="relative flex flex-col items-center mt-6"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DARK STATS STRIP -->
+  <section class="bg-gray-950 text-white py-16">
+    <div class="container mx-auto px-6 lg:px-12 text-center max-w-3xl">
+      <p class="uppercase tracking-[0.25em] text-[10px] text-gray-400">Today</p>
+
+      <div class="mt-1 text-orange-primary font-extrabold">NOW</div>
+      <div id="statsRow" class="mt-8 flex flex-wrap justify-center gap-12"></div>
+      <p class="mt-6 text-gray-400 text-xs">These numbers reflect the startups and student ideas supported through MAHE
+        Innovation Centre’s incubation, mentorship, and funding initiatives till date.</p>
+      <!-- Replace logo links as needed -->
+      <div class="mt-8 flex flex-wrap justify-center gap-6 text-xs text-gray-400">
+        <img src="https://placehold.co/28x28?text=F" class="w-7 h-7 opacity-70" alt="logo 1" />
+        <img src="https://placehold.co/28x28?text=R" class="w-7 h-7 opacity-70" alt="logo 2" />
+        <img src="https://placehold.co/28x28?text=W" class="w-7 h-7 opacity-70" alt="logo 3" />
+        <img src="https://placehold.co/28x28?text=L" class="w-7 h-7 opacity-70" alt="logo 4" />
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIAL with image placeholder -->
+  <section class="bg-gray-900 text-white py-14">
+    <div class="container mx-auto px-6 lg:px-12 max-w-6xl">
+      <div class="grid md:grid-cols-[300px_1fr] gap-8 items-center">
+        <!-- Replace testimonial image link -->
+        <div class="bg-gray-800 rounded-xl overflow-hidden w-[300px] h-[300px] mx-auto md:mx-0">
+          <img id="testimonialPhoto" src="" alt="Testimonial" class="w-full h-full object-cover" />
+        </div>
+        <blockquote class="text-center md:text-left">
+          <p id="testimonialQuote" class="text-sm tracking-wide text-gray-300"></p>
+          <div id="testimonialAuthor" class="mt-2 text-xs text-gray-400"></div>
+        </blockquote>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="bg-orange-primary py-12">
+    <div class="container mx-auto px-6 lg:px-12 max-w-6xl">
+      <h3 class="text-center text-xl font-extrabold text-black">OUR TEAM</h3>
+      <p class="text-center text-[15px] text-black/80 mt-1">Supporting student founders through mentorship, funding
+        access, and hands-on incubation — from first idea to real-world impact.</p>
+
+
+      <div id="teamPrimary" class="grid md:grid-cols-3 gap-8 mt-8"></div>
+  </section>
+
+
+  <section class="bg-[#e9e7e2] py-12">
+    <div class="container mx-auto px-6 lg:px-12 max-w-6xl">
+      <div id="teamSecondary" class="grid md:grid-cols-3 gap-6">
+      </div>
+    </div>
+  </section>
+
+  <footer class="bg-gray-900 text-white py-16">
+    <div class="container mx-auto px-6 lg:px-12">
+      <div class="grid lg:grid-cols-2 gap-12 mb-12">
+        <div>
+          <h3 class="text-2xl font-semibold mb-6 max-w-sm">Subscribe to our newsletter for the latest features and
+            updates.</h3>
+          <form class="flex flex-col sm:flex-row gap-4 mb-4" id="newsletterForm">
+            <input type="email" placeholder="Your Email Here" required
+              class="flex-1 px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-orange-primary transition-colors" />
+            <button type="submit"
+              class="bg-orange-primary text-white px-8 py-3 rounded-lg font-semibold hover:bg-orange-secondary transition-colors">Subscribe</button>
+          </form>
+          <p class="text-sm text-gray-400">By subscribing, you consent to our Privacy Policy and receive updates.</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div>
+            <h4 class="font-bold mb-6 uppercase tracking-wider">Useful Links</h4>
+            <ul class="space-y-3">
+              <li><a href="about.html" class="text-gray-400 hover:text-orange-primary transition-colors">About Us</a>
+              </li>
+              <li><a href="contact.html" class="text-gray-400 hover:text-orange-primary transition-colors">Contact
+                  Us</a></li>
+              <li><a href="events.html" class="text-gray-400 hover:text-orange-primary transition-colors">Events</a>
+              </li>
+              <li><a href="resources.html"
+                  class="text-gray-400 hover:text-orange-primary transition-colors">Resources</a></li>
+              <li><a href="#" class="text-gray-400 hover:text-orange-primary transition-colors">Support</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="font-bold mb-6 uppercase tracking-wider">Company</h4>
+            <ul class="space-y-3">
+              <li><a href="#" class="text-gray-400 hover:text-orange-primary transition-colors">Our Team</a></li>
+              <li><a href="#" class="text-gray-400 hover:text-orange-primary transition-colors">Leadership</a></li>
+              <li><a href="#" class="text-gray-400 hover:text-orange-primary transition-colors">Careers</a></li>
+              <li><a href="#" class="text-gray-400 hover:text-orange-primary transition-colors">Press</a></li>
+              <li><a href="#" class="text-gray-400 hover:text-orange-primary transition-colors">Purpose</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="font-bold mb-6 uppercase tracking-wider">Follow Us</h4>
+            <div class="space-y-3">
+              <a href="#"
+                class="flex items-center space-x-2 text-gray-400 hover:text-orange-primary transition-colors"><i
+                  class="fab fa-facebook"></i><span>Facebook</span></a>
+              <a href="#"
+                class="flex items-center space-x-2 text-gray-400 hover:text-orange-primary transition-colors"><i
+                  class="fab fa-instagram"></i><span>Instagram</span></a>
+              <a href="#"
+                class="flex items-center space-x-2 text-gray-400 hover:text-orange-primary transition-colors"><i
+                  class="fab fa-twitter"></i><span>Twitter</span></a>
+              <a href="#"
+                class="flex items-center space-x-2 text-gray-400 hover:text-orange-primary transition-colors"><i
+                  class="fab fa-linkedin"></i><span>LinkedIn</span></a>
+              <a href="#"
+                class="flex items-center space-x-2 text-gray-400 hover:text-orange-primary transition-colors"><i
+                  class="fab fa-youtube"></i><span>YouTube</span></a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
+        <p class="text-gray-400 text-sm mb-4 md:mb-0">© MAHE INNOVATION CENTRE</p>
+        <div class="flex space-x-6">
+          <a href="#" class="text-gray-400 hover:text-orange-primary transition-colors text-sm">Privacy Policy</a>
+          <a href="#" class="text-gray-400 hover:text-orange-primary transition-colors text-sm">Terms of Service</a>
+          <a href="#" class="text-gray-400 hover:text-orange-primary transition-colors text-sm">Cookie Settings</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <link rel="stylesheet" href="assets/chatbot.css">
+  <script src="assets/chatbot.js"></script>
+  <script>
+    let teamMembers = [];
+    let aboutFeatures = [];
+    let aboutCards = [];
+
+    async function fetchJSON(url) {
+      try {
+        const res = await fetch(url);
+        if (!res.ok) {
+          console.error('Failed:', url);
+          return [];
+        }
+        return await res.json();
+      } catch (e) {
+        console.error('Fetch error:', url, e);
+        return [];
+      }
+    }
+
+    function renderAboutBullets() {
+      const container = document.getElementById('aboutBullets');
+      if (!container) return;
+
+      if (aboutFeatures.length === 0) {
+        container.innerHTML =
+          '<p class="text-sm text-gray-500">No content yet</p>';
+        return;
+      }
+
+      container.innerHTML = aboutFeatures.sort((a, b) => a.order_index - b.order_index).map(b => `
+        <div class="flex items-start gap-4">
+          <span class="text-orange-primary mt-1">
+            <i class="fa-solid fa-circle text-[8px]"></i>
+          </span>
+          <div>
+            <h3 class="font-extrabold text-gray-900 tracking-wide">${b.title}</h3>
+            <p class="text-sm text-gray-700 max-w-sm">
+              ${typeof b.description === 'string' ? b.description : ''}
+            </p>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderAboutCards() {
+      const container = document.getElementById('aboutCards');
+      if (!container) return;
+
+      if (aboutCards.length === 0) {
+        container.innerHTML = '';
+        return;
+      }
+
+      const offsets = [
+        'translate-x-0 -translate-y-18 rotate-0',
+        'translate-x-8 -translate-y-14 rotate-1',
+        '-translate-x-2 -translate-y-24 -rotate-1',
+        '-translate-x-1 -translate-y-24 -rotate-0',
+      ];
+
+      container.innerHTML = aboutCards
+        .sort((a, b) => a.order_index - b.order_index)
+        .slice(0, 4)
+        .map((c, i) => {
+          const isDark = i % 2 === 1;
+          const transform = offsets[i];
+
+          return `
+            <div class="
+              ${isDark ? 'bg-gray-900 text-white' : 'bg-white'}
+              p-6 rounded-2xl shadow-2xl ring-1
+              ${isDark ? 'ring-white/10' : 'ring-black/5'}
+              w-72 sm:w-96 mb-8 last:mb-0
+              transform ${transform}
+            ">
+              <div class="flex items-center gap-3 mb-3">
+                ${c.image_url
+              ? `<img src="${c.image_url}" class="w-6 h-6 rounded" />`
+              : `<div class="w-6 h-6 bg-orange-primary rounded"></div>`
+            }
+                <span class="text-xs font-bold">${i + 1}</span>
+              </div>
+
+              <h4 class="text-sm font-bold mb-1">${c.title}</h4>
+              <p class="text-sm ${isDark ? 'text-gray-300' : 'text-gray-700'}">
+                ${typeof c.description === 'string' ? c.description : ''}
+              </p>
+            </div>
+          `;
+        })
+        .join('');
+    }
+
+    function renderTeamMembers() {
+      const primary = document.getElementById('teamPrimary');
+      const secondary = document.getElementById('teamSecondary');
+
+      if (!primary || !secondary) return;
+
+      if (!teamMembers || teamMembers.length === 0) {
+        primary.innerHTML = '<p class="text-sm text-black/70">No team members yet</p>';
+        return;
+      }
+
+      const sorted = teamMembers
+        .sort((a, b) => a.order_index - b.order_index);
+
+      primary.innerHTML = sorted.slice(0, 3).map(renderTeamCard).join('');
+      secondary.innerHTML = sorted.slice(3).map(renderTeamCard).join('');
+    }
+
+    function renderTeamCard(member) {
+      // Parse content_data for role
+      let contentData = member.content_data;
+      if (typeof contentData === 'string') {
+        try { contentData = JSON.parse(contentData); } catch (e) { contentData = {}; }
+      }
+      contentData = contentData || {};
+      const role = contentData.role || member.description || '';
+
+      return `
+        <div class="bg-gray-900 rounded-2xl overflow-hidden flex flex-col shadow-lg">
+
+          <!-- Image -->
+          <div class="h-56 w-full bg-gray-300 flex items-center justify-center">
+            ${member.image_url
+          ? `<img src="${member.image_url}" alt="${member.title}" class="w-full h-full object-cover" />`
+          : `<span class="text-gray-400 text-xl font-semibold">${member.title}</span>`
+        }
+          </div>
+
+          <!-- Content -->
+          <div class="bg-gray-900 text-white px-5 py-4 flex flex-col gap-1">
+            <h4 class="text-lg font-semibold leading-tight">
+              ${member.title}
+            </h4>
+            <p class="text-sm text-orange-400 font-medium">
+              ${role}
+            </p>
+
+          <!-- Icons -->
+          <div class="mt-3 flex gap-4 text-white opacity-80">
+            <i class="fa-brands fa-linkedin hover:opacity-100 transition"></i>
+            <i class="fa-brands fa-x-twitter hover:opacity-100 transition"></i>
+            <i class="fa-brands fa-instagram hover:opacity-100 transition"></i>
+          </div>
+        </div>
+      </div>
+    `;
+    }
+
+    async function loadStats() {
+      try {
+        const res = await fetch('/api/content/about/stats');
+        if (!res.ok) return;
+
+        const data = await res.json();
+        const container = document.getElementById('statsRow');
+
+        if (!container || !data || data.length === 0) return;
+
+        // Parse content_data for stat_value
+        container.innerHTML = data.sort((a, b) => a.order_index - b.order_index).map(s => {
+          let contentData = s.content_data;
+          if (typeof contentData === 'string') {
+            try { contentData = JSON.parse(contentData); } catch (e) { contentData = {}; }
+          }
+          const statValue = contentData?.stat_value || s.title;
+          const statLabel = s.description || s.title;
+
+          return `
+          <div class="text-center min-w-[140px]">
+            <div class="text-4xl md:text-5xl font-extrabold text-white">
+              ${statValue}
+            </div>
+            <div class="text-sm text-gray-400 tracking-wide">
+              ${statLabel}
+            </div>
+          </div>
+        `;
+        }).join('');
+      } catch (e) {
+        console.error('Stats load failed', e);
+      }
+    }
+
+    async function loadTestimonial() {
+      try {
+        const res = await fetch('/api/content/about/testimonials');
+        if (!res.ok) return;
+
+        const data = await res.json();
+        if (!data || data.length === 0) return;
+
+        const t = data[0]; // first active testimonial
+
+        // Parse content_data for role
+        let contentData = t.content_data;
+        if (typeof contentData === 'string') {
+          try { contentData = JSON.parse(contentData); } catch (e) { contentData = {}; }
+        }
+
+        document.getElementById('testimonialPhoto').src =
+          t.image_url || 'https://placehold.co/300x300';
+
+        document.getElementById('testimonialQuote').textContent =
+          `" ${t.description || ''} "`;
+
+        const role = contentData?.role ? `, ${contentData.role}` : '';
+        document.getElementById('testimonialAuthor').textContent =
+          `— ${t.title}${role}`;
+      } catch (e) {
+        console.error('Testimonial load failed', e);
+      }
+    }
+
+    async function loadTeamMembers() {
+      try {
+        const res = await fetch('/api/content/about/team');
+        if (!res.ok) return;
+
+        teamMembers = await res.json();
+        renderTeamMembers();
+      } catch (e) {
+        console.error('Team members load failed', e);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      aboutFeatures = await fetchJSON('/api/content/about/features');
+      aboutCards = await fetchJSON('/api/content/about/cards');
+
+      renderAboutBullets();
+      renderAboutCards();
+
+      loadTeamMembers();
+      loadStats();
+      loadTestimonial();
+    });
+  </script>
+
+  <script>
+    // Mobile menu toggle
+    document.getElementById('mobile-menu-btn')?.addEventListener('click', function () {
+      const menu = document.getElementById('mobile-menu');
+      menu.classList.toggle('hidden');
+    });
+
+    // Newsletter form handling
+    document.getElementById('newsletterForm')?.addEventListener('submit', function (e) {
+      e.preventDefault();
+      alert('Thank you for subscribing! We\'ll keep you updated.');
+      this.reset();
+    });
+    // Dark mode initialization
+    (function () {
+      const savedTheme = localStorage.getItem('theme');
+      const savedSystemTheme = localStorage.getItem('systemTheme');
+      const body = document.body;
+
+      function applySystemTheme() {
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          body.classList.add('dark-mode');
+        } else {
+          body.classList.remove('dark-mode');
+        }
+      }
+
+      if (savedSystemTheme === 'true') {
+        applySystemTheme();
+        if (window.matchMedia) {
+          window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applySystemTheme);
+        }
+      } else if (savedTheme === 'dark') {
+        body.classList.add('dark-mode');
+      }
+    })();
+
+  </script>
+</body>
+
+</html>

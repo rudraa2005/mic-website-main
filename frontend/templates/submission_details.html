@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Submission Details - MAHE Innovation Centre</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .liquid-glass { background: rgba(255,255,255,.1); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,.2); box-shadow: 0 8px 32px rgba(31,38,135,.37); }
+    .liquid-glass::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg, rgba(255,255,255,.4), rgba(255,255,255,.1)); border-radius:inherit; z-index:-1; }
+    .nav-link::before { content:""; position:absolute; bottom:-5px; left:50%; width:0; height:2px; background:linear-gradient(90deg,#ff6b35,#ff8c42); transition:all .3s ease; transform:translateX(-50%); border-radius:2px; }
+    .nav-link:hover::before { width:100%; }
+    .glass-card { background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); }
+
+    /* Dark Mode Styles */
+    body.dark-mode {
+      background: #0f172a;
+      color: #e2e8f0;
+    }
+    body.dark-mode .bg-gray-50,
+    body.dark-mode .bg-gray-100,
+    body.dark-mode .bg-gray-200 {
+      background: #1e293b !important;
+    }
+    body.dark-mode .bg-gray-900 {
+      background: #0f172a !important;
+    }
+    body.dark-mode .text-gray-800,
+    body.dark-mode .text-gray-900 {
+      color: #e2e8f0 !important;
+    }
+    body.dark-mode .text-gray-600,
+    body.dark-mode .text-gray-700 {
+      color: #cbd5e1 !important;
+    }
+    body.dark-mode .text-gray-500 {
+      color: #94a3b8 !important;
+    }
+    body.dark-mode .text-gray-400 {
+      color: #94a3b8 !important;
+    }
+    body.dark-mode .text-white {
+      color: #f8fafc !important;
+    }
+    body.dark-mode .text-black {
+      color: #f8fafc !important;
+    }
+    body.dark-mode .liquid-glass {
+      background: rgba(30, 41, 59, 0.8) !important;
+    }
+    body.dark-mode .nav-link {
+      color: #cbd5e1 !important;
+    }
+    body.dark-mode .nav-link:hover {
+      color: #ff6b35 !important;
+    }
+    body.dark-mode .bg-white {
+      background: #1e293b !important;
+    }
+    body.dark-mode .bg-gray-800 {
+      background: #1e293b !important;
+    }
+    body.dark-mode .border-gray-800 {
+      border-color: #1e293b !important;
+    }
+    body.dark-mode .border-gray-700 {
+      border-color: #334155 !important;
+    }
+    body.dark-mode .glass-card {
+      background: rgba(30, 41, 59, 0.8) !important;
+    }
+
+    /* File Upload Styles */
+    .upload-area {
+      border: 2px dashed #cbd5e1;
+      border-radius: 0.75rem;
+      padding: 2rem;
+      text-align: center;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    .upload-area:hover {
+      border-color: #ff6b35;
+      background: rgba(255, 107, 53, 0.05);
+    }
+    .upload-area.dragover {
+      border-color: #ff6b35;
+      background: rgba(255, 107, 53, 0.1);
+    }
+    body.dark-mode .upload-area {
+      border-color: #475569;
+    }
+    body.dark-mode .upload-area:hover {
+      border-color: #ff6b35;
+      background: rgba(255, 107, 53, 0.1);
+    }
+  </style>
+  <script>
+    tailwind.config = { theme: { extend: { colors: { 'orange-primary':'#ff6b35','orange-secondary':'#ff8c42' }, fontFamily: { inter:['Inter','sans-serif'] } } } }
+  </script>
+</head>
+<body class="bg-gray-200 font-inter overflow-x-hidden">
+  <!-- Navigation -->
+  <nav class="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-11/12 max-w-6xl">
+    <div class="liquid-glass rounded-full px-6 py-3 relative">
+      <div class="flex justify-between items-center">
+        <div class="flex items-center space-x-2">
+          <div class="w-8 h-8 bg-gradient-to-br from-orange-primary to-orange-secondary rounded-lg flex items-center justify-center"><span class="text-white font-bold text-sm">M</span></div>
+          <span class="text-gray-800 font-semibold text-lg">MAHE</span>
+        </div>
+        <div class="hidden md:flex items-center space-x-8 ml-auto">
+          <a href="index-tailwind.html" class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors font-medium">Home</a>
+          <a href="about.html" class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors font-medium">About Us</a>
+          <a href="events.html" class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors font-medium">Events</a>
+          <a href="resources.html" class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors font-medium">Resources</a>
+          <a href="contact.html" class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors font-medium">Contact</a>
+        </div>
+        <div class="hidden md:flex items-center space-x-4 ml-4">
+          <a href="profile.html" class="w-10 h-10 rounded-full bg-orange-primary text-white flex items-center justify-center">
+            <i class="fas fa-user"></i>
+          </a>
+        </div>
+        <button class="md:hidden text-gray-700" id="mobile-menu-btn"><i class="fas fa-bars text-xl"></i></button>
+      </div>
+      <!-- Mobile Menu -->
+      <div id="mobile-menu" class="hidden md:hidden mt-4 pb-2">
+        <div class="flex flex-col space-y-4">
+          <a href="index-tailwind.html" class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors font-medium">Home</a>
+          <a href="about.html" class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors font-medium">About Us</a>
+          <a href="events.html" class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors font-medium">Events</a>
+          <a href="resources.html" class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors font-medium">Resources</a>
+          <a href="contact.html" class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors font-medium">Contact</a>
+          <a href="profile.html" class="w-10 h-10 rounded-full bg-orange-primary text-white flex items-center justify-center">
+            <i class="fas fa-user"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <section class="pt-32 pb-24 bg-gray-50 min-h-screen">
+    <div class="container mx-auto px-6 lg:px-12">
+      <div class="max-w-4xl mx-auto">
+        <!-- Header -->
+        <div class="mb-8">
+          <a href="submissions.html" class="inline-flex items-center text-gray-600 hover:text-orange-primary mb-4 transition-colors">
+            <i class="fas fa-arrow-left mr-2"></i>Back to Submissions
+          </a>
+          <h1 class="text-4xl font-black text-gray-900 mb-2">Submission Details</h1>
+          <p class="text-gray-600">View and manage your submission</p>
+        </div>
+
+        <!-- Submission Details Card -->
+        <div class="glass-card p-6 rounded-lg shadow" id="submissionDetails">
+          <div class="text-center py-12">
+            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-primary mx-auto"></div>
+            <p class="text-gray-600 mt-4">Loading submission details...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-white py-16">
+    <div class="container mx-auto px-6 lg:px-12">
+      <div class="grid lg:grid-cols-2 gap-12 mb-12">
+        <div>
+          <h3 class="text-2xl font-semibold mb-6 max-w-sm">Subscribe to our newsletter for the latest features and updates.</h3>
+          <form class="flex flex-col sm:flex-row gap-4 mb-4" id="newsletterForm">
+            <input type="email" placeholder="Your Email Here" required class="flex-1 px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-orange-primary transition-colors" />
+            <button type="submit" class="bg-orange-primary text-white px-8 py-3 rounded-lg font-semibold hover:bg-orange-secondary transition-colors">Subscribe</button>
+          </form>
+          <p class="text-sm text-gray-400">By subscribing, you consent to our Privacy Policy and receive updates.</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div>
+            <h4 class="font-bold mb-6 uppercase tracking-wider">Useful Links</h4>
+            <ul class="space-y-3">
+              <li><a href="about.html" class="text-gray-400 hover:text-orange-primary transition-colors">About Us</a></li>
+              <li><a href="contact.html" class="text-gray-400 hover:text-orange-primary transition-colors">Contact Us</a></li>
+              <li><a href="events.html" class="text-gray-400 hover:text-orange-primary transition-colors">Events</a></li>
+              <li><a href="resources.html" class="text-gray-400 hover:text-orange-primary transition-colors">Resources</a></li>
+              <li><a href="index-tailwind.html" class="text-gray-400 hover:text-orange-primary transition-colors">Home</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="font-bold mb-6 uppercase tracking-wider">Company</h4>
+            <ul class="space-y-3">
+              <li><a href="#" class="text-gray-400 hover:text-orange-primary transition-colors">Our Team</a></li>
+              <li><a href="#" class="text-gray-400 hover:text-orange-primary transition-colors">Leadership</a></li>
+              <li><a href="#" class="text-gray-400 hover:text-orange-primary transition-colors">Careers</a></li>
+              <li><a href="#" class="text-gray-400 hover:text-orange-primary transition-colors">Press</a></li>
+              <li><a href="#" class="text-gray-400 hover:text-orange-primary transition-colors">Purpose</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="font-bold mb-6 uppercase tracking-wider">Follow Us</h4>
+            <div class="space-y-3">
+              <a href="#" class="flex items-center space-x-2 text-gray-400 hover:text-orange-primary transition-colors"><i class="fab fa-facebook"></i><span>Facebook</span></a>
+              <a href="#" class="flex items-center space-x-2 text-gray-400 hover:text-orange-primary transition-colors"><i class="fab fa-instagram"></i><span>Instagram</span></a>
+              <a href="#" class="flex items-center space-x-2 text-gray-400 hover:text-orange-primary transition-colors"><i class="fab fa-twitter"></i><span>Twitter</span></a>
+              <a href="#" class="flex items-center space-x-2 text-gray-400 hover:text-orange-primary transition-colors"><i class="fab fa-linkedin"></i><span>LinkedIn</span></a>
+              <a href="#" class="flex items-center space-x-2 text-gray-400 hover:text-orange-primary transition-colors"><i class="fab fa-youtube"></i><span>YouTube</span></a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
+        <p class="text-gray-400 text-sm mb-4 md:mb-0">© MAHE INNOVATION CENTRE</p>
+        <div class="flex space-x-6">
+          <a href="#" class="text-gray-400 hover:text-orange-primary transition-colors text-sm">Privacy Policy</a>
+          <a href="#" class="text-gray-400 hover:text-orange-primary transition-colors text-sm">Terms of Service</a>
+          <a href="#" class="text-gray-400 hover:text-orange-primary transition-colors text-sm">Cookie Settings</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile menu toggle
+    document.getElementById('mobile-menu-btn')?.addEventListener('click', function() {
+      const menu = document.getElementById('mobile-menu');
+      menu.classList.toggle('hidden');
+    });
+
+    // Newsletter form
+    document.getElementById('newsletterForm')?.addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert('Thank you for subscribing!');
+      this.reset();
+    });
+
+    // Get submission ID from URL
+    function getSubmissionId() {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get('id');
+    }
+
+    // Render status badge
+    function renderStatusBadge(status) {
+      const statusLower = status.toLowerCase();
+      if (statusLower === 'approved') {
+        return `<span class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-semibold">Approved</span>`;
+      }
+      if (statusLower === 'submitted') {
+        return `<span class="px-3 py-1 bg-yellow-100 text-yellow-700 rounded-full text-sm font-semibold">Under Review</span>`;
+      }
+      return `<span class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-semibold">Draft</span>`;
+    }
+
+    // Load submission details
+    async function loadSubmissionDetails() {
+      const token = localStorage.getItem('authToken');
+      if (!token) {
+        window.location.href = "login.html";
+        return;
+      }
+
+      const submissionId = getSubmissionId();
+      console.log("Loading submission ID:", submissionId);
+      if (!submissionId) {
+        document.getElementById('submissionDetails').innerHTML = `
+          <div class="text-center py-12">
+            <i class="fas fa-exclamation-triangle text-4xl text-red-500 mb-4"></i>
+            <p class="text-gray-600 text-lg">No submission ID provided</p>
+            <a href="submissions.html" class="inline-block mt-4 text-orange-primary hover:text-orange-secondary">Go back to submissions</a>
+          </div>
+        `;
+        return;
+      }
+
+      try {
+        const res = await fetch(`/api/submissions/${submissionId}`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        if (res.status === 200) {
+          const submission = await res.json();
+          renderSubmissionDetails(submission);
+        } else if (res.status === 401) {
+          window.location.href = "login.html";
+        } else {
+          const errorText = await res.text();
+          document.getElementById('submissionDetails').innerHTML = `
+            <div class="text-center py-12">
+              <i class="fas fa-exclamation-triangle text-4xl text-red-500 mb-4"></i>
+              <p class="text-gray-600 text-lg">Failed to load submission details</p>
+              <p class="text-gray-500 text-sm mt-2">${errorText || 'Unknown error'}</p>
+              <a href="submissions.html" class="inline-block mt-4 text-orange-primary hover:text-orange-secondary">Go back to submissions</a>
+            </div>
+          `;
+        }
+      } catch (error) {
+        document.getElementById('submissionDetails').innerHTML = `
+          <div class="text-center py-12">
+            <i class="fas fa-exclamation-triangle text-4xl text-red-500 mb-4"></i>
+            <p class="text-gray-600 text-lg">Error loading submission details</p>
+            <p class="text-gray-500 text-sm mt-2">${error.message}</p>
+            <a href="submissions.html" class="inline-block mt-4 text-orange-primary hover:text-orange-secondary">Go back to submissions</a>
+          </div>
+        `;
+      }
+    }
+
+    
+    function renderSubmissionDetails(submission) {
+      const isDraft = submission.status && submission.status.toLowerCase() === 'draft';
+      const filePath = submission.file_path || '';
+      const fileName = filePath ? filePath.split('/').pop() : 'No file uploaded';
+
+      let html = `
+        <div class="mb-6">
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center space-x-3">
+              <h2 class="text-2xl font-bold text-gray-800" id="submissionTitle">${submission.title || 'Untitled'}</h2>
+              ${renderStatusBadge(submission.status)}
+            </div>
+          </div>
+          ${isDraft ? `
+            <div class="mb-6">
+              <label class="block text-sm font-semibold text-gray-700 mb-2">Title</label>
+              <input type="text" id="titleInput" value="${submission.title || ''}" 
+                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-primary bg-white text-gray-800">
+            </div>
+          ` : `
+            <p class="text-gray-600 mb-4" id="submissionDescription">${submission.description || 'No description provided'}</p>
+          `}
+          ${isDraft ? `
+            <div class="mb-6">
+              <label class="block text-sm font-semibold text-gray-700 mb-2">Description</label>
+              <textarea id="descriptionInput" rows="4" 
+                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-primary bg-white text-gray-800">${submission.description || ''}</textarea>
+            </div>
+          ` : ''}
+          <div class="flex flex-wrap gap-4 text-sm text-gray-500 mb-6">
+            <span>
+              <i class="fas fa-calendar mr-2"></i>
+              Created: ${new Date(submission.created_at).toLocaleDateString()}
+            </span>
+            ${submission.updated_at ? `
+              <span>
+                <i class="fas fa-edit mr-2"></i>
+                Updated: ${new Date(submission.updated_at).toLocaleDateString()}
+              </span>
+            ` : ''}
+          </div>
+        </div>
+      `;
+
+      // File section
+      html += `
+        <div class="mb-6">
+          <h3 class="text-lg font-semibold text-gray-800 mb-3">
+            <i class="fas fa-file mr-2"></i>File
+          </h3>
+      `;
+
+      if (isDraft) {
+        html += `
+          <div class="mb-4">
+            <div class="upload-area" id="uploadArea">
+              <input type="file" id="fileInput" class="hidden" accept="*/*">
+              <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-3"></i>
+              <p class="text-gray-600 mb-2">Drag and drop a file here or click to browse</p>
+              <p class="text-sm text-gray-500">Maximum file size: 10MB</p>
+            </div>
+            <div id="fileInfo" class="mt-4 ${filePath ? '' : 'hidden'}">
+              <div class="flex items-center justify-between p-3 bg-gray-100 rounded-lg">
+                <div class="flex items-center space-x-3">
+                  <i class="fas fa-file text-orange-primary"></i>
+                  <div>
+                    <p class="text-sm font-semibold text-gray-800" id="fileName">${fileName}</p>
+                    <p class="text-xs text-gray-500" id="fileSize"></p>
+                  </div>
+                </div>
+                <button id="removeFile" class="text-red-500 hover:text-red-700">
+                  <i class="fas fa-times"></i>
+                </button>
+              </div>
+            </div>
+            ${filePath ? `
+              <div class="mt-2 text-sm text-gray-600">
+                <i class="fas fa-info-circle mr-2"></i>Current file: <a href="${filePath}" target="_blank" class="text-orange-primary hover:underline">${fileName}</a>
+              </div>
+            ` : ''}
+          </div>
+        `;
+      } else {
+        html += `
+          <div class="p-4 bg-gray-100 rounded-lg">
+            ${filePath ? `
+              <div class="flex items-center space-x-3">
+                <i class="fas fa-file text-orange-primary text-xl"></i>
+                <div>
+                  <p class="text-sm font-semibold text-gray-800">${fileName}</p>
+                  <button 
+                    onclick="downloadFile('${submission.submission_id}')"
+                    class="text-orange-primary hover:underline text-sm"
+                  > 
+                    View File
+                  </button>
+                </div>
+              </div>
+            ` : `
+              <p class="text-gray-600">No file uploaded</p>
+            `}
+          </div>
+        `;
+      }
+
+      html += `</div>`;
+
+      // Action buttons
+      if (isDraft) {
+        html += `
+          <div class="flex space-x-4">
+            <button id="saveBtn" class="flex-1 bg-orange-primary text-white px-6 py-3 rounded-lg">
+              Save Changes
+            </button>
+
+            <button id="submitBtn" class="flex-1 bg-green-600 text-white px-6 py-3 rounded-lg">
+              Submit
+            </button>
+
+            <button id="cancelBtn" class="px-6 py-3 bg-gray-200 text-gray-700 rounded-lg">
+              Cancel
+            </button>
+          </div>
+        `;
+      } else {
+        html += `
+          <div>
+            <a href="submissions.html" class="inline-block bg-gray-200 text-gray-700 px-6 py-3 rounded-lg font-semibold hover:bg-gray-300 transition-colors">
+              <i class="fas fa-arrow-left mr-2"></i>Back to Submissions
+            </a>
+          </div>
+        `;
+      }
+
+      document.getElementById('submissionDetails').innerHTML = html;
+
+      if (isDraft) {
+        setupDraftMode(submission);
+
+        const submitBtn = document.getElementById('submitBtn');
+        if(submitBtn){
+          submitBtn.addEventListener('click', async () => {
+          if (!confirm('Once submitted, you cannot edit this submission. Continue?')) return;
+
+          const token = localStorage.getItem('authToken');
+
+          const res = await fetch(`/api/submissions/submit/${submission.submission_id}`, {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${token}`
+            } 
+          });
+
+          if (res.ok) {
+            alert('Submission submitted successfully');
+            window.location.href = 'submissions.html';
+          } else {
+            const text = await res.text();
+            alert(text);
+          }
+        });
+        }
+      }
+    }
+    
+    function setupDraftMode(submission) {
+      const uploadArea = document.getElementById('uploadArea');
+      const fileInput = document.getElementById('fileInput');
+      const fileInfo = document.getElementById('fileInfo');
+      const fileName = document.getElementById('fileName');
+      const fileSize = document.getElementById('fileSize');
+      const removeFile = document.getElementById('removeFile');
+      const saveBtn = document.getElementById('saveBtn');
+      const cancelBtn = document.getElementById('cancelBtn');
+      let selectedFile = null;
+
+      // File upload handling
+      uploadArea.addEventListener('click', () => fileInput.click());
+
+      uploadArea.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        uploadArea.classList.add('dragover');
+      });
+
+      uploadArea.addEventListener('dragleave', () => {
+        uploadArea.classList.remove('dragover');
+      });
+
+      uploadArea.addEventListener('drop', (e) => {
+        e.preventDefault();
+        uploadArea.classList.remove('dragover');
+        const files = e.dataTransfer.files;
+        if (files.length > 0) {
+          handleFile(files[0]);
+        }
+      });
+
+      fileInput.addEventListener('change', (e) => {
+        if (e.target.files.length > 0) {
+          handleFile(e.target.files[0]);
+        }
+      });
+
+      function handleFile(file) {
+        if (file.size > 10 * 1024 * 1024) {
+          alert('File size exceeds 10MB limit');
+          return;
+        }
+        selectedFile = file;
+        fileName.textContent = file.name;
+        fileSize.textContent = (file.size / 1024).toFixed(2) + ' KB';
+        fileInfo.classList.remove('hidden');
+      }
+
+      removeFile.addEventListener('click', () => {
+        fileInput.value = '';
+        fileInfo.classList.add('hidden');
+        selectedFile = null;
+      });
+
+      saveBtn.addEventListener('click', async () => {
+        await saveSubmission(submission.submission_id);
+      });
+
+      // Cancel button
+      cancelBtn.addEventListener('click', () => {
+        if (confirm('Are you sure you want to cancel? Unsaved changes will be lost.')) {
+          window.location.href = 'submissions.html';
+        }
+      });
+    }
+    let filePath = null;
+
+    async function saveSubmission(submissionId) {
+      const token = localStorage.getItem('authToken');
+      const titleInput = document.getElementById('titleInput');
+      const descriptionInput = document.getElementById('descriptionInput');
+      const fileInput = document.getElementById('fileInput');
+
+      const title = titleInput.value.trim();
+      const description = descriptionInput.value.trim();
+
+      if (!title) {
+        alert('Please enter a title');
+        return;
+      }
+
+      try {
+        let newFilePath = null;
+
+        if (fileInput.files.length > 0) {
+          const formData = new FormData();
+          formData.append('file', fileInput.files[0]);
+
+          const uploadRes = await fetch(
+            `/api/submissions/${submissionId}/attach-file`,
+            {
+              method: 'POST',
+              headers: {
+                'Authorization': `Bearer ${token}`
+              },
+              body: formData
+            }
+          );
+
+        if (!uploadRes.ok) {
+          const text = await uploadRes.text();
+          throw new Error(text || 'File upload failed');
+        }
+
+        const uploadData = await uploadRes.json();
+        newFilePath = uploadData.file_path;
+      }
+        const res = await fetch(`/api/submissions/${submissionId}`, {
+          method: 'PUT',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            title,
+            description,
+            file_path: newFilePath
+          })
+        });
+        console.log(res);
+
+        if (res.ok) {
+          alert('Submission updated successfully!');
+          window.location.reload();
+        } else {
+          const errorText = await res.text();
+          alert(`Failed to update submission: ${errorText || 'Unknown error'}`);
+        }
+      } catch (error) {
+        alert(`Error updating submission: ${error.message}`);
+      }
+    }
+
+    loadSubmissionDetails();
+
+    // Dark mode initialization
+    (function() {
+      const savedTheme = localStorage.getItem('theme');
+      const savedSystemTheme = localStorage.getItem('systemTheme');
+      const body = document.body;
+
+      function applySystemTheme() {
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          body.classList.add('dark-mode');
+        } else {
+          body.classList.remove('dark-mode');
+        }
+      }
+
+      if (savedSystemTheme === 'true') {
+        applySystemTheme();
+        if (window.matchMedia) {
+          window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applySystemTheme);
+        }
+      } else if (savedTheme === 'dark') {
+        body.classList.add('dark-mode');
+      }
+    })();
+  </script>
+  <!-- Chatbot Icon - Fixed Bottom Right -->
+  <!-- Chatbot Widget -->
+  <link rel="stylesheet" href="assets/chatbot.css">
+  <script src="assets/chatbot.js"></script>
+  <script>
+      document.addEventListener('DOMContentLoaded', function() {
+          setTimeout(function() {
+              const defaultLauncher = document.getElementById('mahe-chatbot-launcher');
+              if (defaultLauncher) defaultLauncher.style.display = 'none';
+              const customLauncher = document.createElement('button');
+              customLauncher.className = 'fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-gradient-to-br from-orange-primary to-orange-secondary text-white shadow-xl flex items-center justify-center hover:scale-110 transition-all duration-300';
+              customLauncher.setAttribute('aria-label', 'Open Chatbot');
+              customLauncher.innerHTML = '<i class="fas fa-comments text-2xl"></i>';
+              customLauncher.onclick = function() { if (window.MaheChatbot) window.MaheChatbot.open(); };
+              document.body.appendChild(customLauncher);
+          }, 100);
+      });
+  </script>
+</body>
+</html>
+

@@ -1,0 +1,67 @@
+# ===== Secrets & Environment =====
+.env
+.env.*
+!.env.example
+
+# ===== Compiled Go binaries =====
+server
+*.exe
+*.out
+*.bin
+
+# ===== Python =====
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+*.egg
+dist/
+build/
+.eggs/
+*.whl
+venv/
+.venv/
+env/
+
+# ===== Databases =====
+*.db
+*.sqlite
+*.sqlite3
+instance/
+
+# ===== macOS =====
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# ===== IDE / Editor =====
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.project
+.settings/
+.classpath
+
+# ===== User uploads =====
+uploads/
+
+# ===== Node (if ever used) =====
+node_modules/
+package-lock.json
+yarn.lock
+
+# ===== Logs & temp =====
+*.log
+tmp/
+temp/
+
+# ===== Gemini agent artifacts =====
+.gemini/
+.agent/
+
+.txt/

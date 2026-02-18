@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Insight - MAHE Innovation Centre</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .liquid-glass { background: rgba(255,255,255,.1); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,.2); box-shadow: 0 8px 32px rgba(31,38,135,.37); }
+    .liquid-glass::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg, rgba(255,255,255,.4), rgba(255,255,255,.1)); border-radius:inherit; z-index:-1; }
+    .nav-link::before { content:""; position:absolute; bottom:-5px; left:50%; width:0; height:2px; background:linear-gradient(90deg,#ff6b35,#ff8c42); transition:all .3s ease; transform:translateX(-50%); border-radius:2px; }
+    .nav-link:hover::before { width:100%; }
+    .glass-card { background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); }
+    
+    /* Chatbot Sidebar */
+    .chatbot-sidebar {
+      position: fixed;
+      right: -400px;
+      top: 0;
+      width: 400px;
+      height: 100vh;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      box-shadow: -5px 0 20px rgba(0,0,0,0.3);
+      transition: right 0.3s ease-in-out;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+    }
+    .chatbot-sidebar.open {
+      right: 0;
+    }
+    
+    /* Content shift when chatbot opens */
+    .main-content {
+      transition: margin-right 0.3s ease-in-out;
+    }
+    .main-content.shifted {
+      margin-right: 400px;
+    }
+    
+    /* Chatbot toggle button */
+    .chatbot-toggle-btn {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, #ff6b35, #ff8c42);
+      border-radius: 50%;
+      box-shadow: 0 4px 20px rgba(255,107,53,0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 999;
+      transition: all 0.3s ease;
+    }
+    .chatbot-toggle-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 25px rgba(255,107,53,0.6);
+    }
+    .chatbot-toggle-btn.hidden {
+      display: none;
+    }
+    
+    /* Submission Modal */
+    .submission-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      backdrop-filter: blur(5px);
+      z-index: 2000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+    .submission-modal.show {
+      display: flex;
+    }
+    .submission-modal-content {
+      background: white;
+      border-radius: 1.5rem;
+      padding: 2rem;
+      max-width: 500px;
+      width: 90%;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+    
+    /* Success Notification */
+    .success-notification {
+      position: fixed;
+      top: 100px;
+      right: 2rem;
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: white;
+      padding: 1rem 1.5rem;
+      border-radius: 0.75rem;
+      box-shadow: 0 10px 30px rgba(16,185,129,0.3);
+      z-index: 2001;
+      display: none;
+      align-items: center;
+      gap: 1rem;
+      animation: slideIn 0.3s ease;
+    }
+    .success-notification.show {
+      display: flex;
+    }
+    @keyframes slideIn {
+      from {
+        transform: translateX(400px);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+    .chatbot-header {
+      padding: 1.5rem;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,107,53,0.1);
+    }
+    .chatbot-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .chatbot-input-area {
+      padding: 1.5rem;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+    .message {
+      padding: 0.75rem 1rem;
+      border-radius: 1rem;
+      max-width: 80%;
+      word-wrap: break-word;
+    }
+    .message.user {
+      background: rgba(255,107,53,0.2);
+      color: white;
+      align-self: flex-end;
+      border-bottom-right-radius: 0.25rem;
+    }
+    .message.ai {
+      background: rgba(255,255,255,0.1);
+      color: white;
+      align-self: flex-start;
+      border-bottom-left-radius: 0.25rem;
+    }
+    
+    /* Rating Stars */
+    .rating-stars {
+      display: flex;
+      gap: 0.5rem;
+      font-size: 1.5rem;
+    }
+    .star {
+      color: #d1d5db;
+      transition: color 0.2s;
+    }
+    .star.filled {
+      color: #ffd700;
+    }
+    
+    /* Upload Area */
+    .upload-area {
+      border: 2px dashed #ff6b35;
+      border-radius: 1rem;
+      padding: 3rem;
+      text-align: center;
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+    .upload-area:hover {
+      background: rgba(255,107,53,0.05);
+      border-color: #ff8c42;
+    }
+    .upload-area.dragover {
+      background: rgba(255,107,53,0.1);
+      border-color: #ff8c42;
+    }
+
+    /* Dark Mode Styles */
+    body.dark-mode {
+      background: #0f172a;
+      color: #e2e8f0;
+    }
+    body.dark-mode .bg-gray-50,
+    body.dark-mode .bg-gray-100,
+    body.dark-mode .bg-gray-200 {
+      background: #1e293b !important;
+    }
+    body.dark-mode .bg-gray-900 {
+      background: #0f172a !important;
+    }
+    body.dark-mode .text-gray-800,
+    body.dark-mode .text-gray-900 {
+      color: #e2e8f0 !important;
+    }
+    body.dark-mode .text-gray-600,
+    body.dark-mode .text-gray-700 {
+      color: #cbd5e1 !important;
+    }
+    body.dark-mode .text-gray-500 {
+      color: #94a3b8 !important;
+    }
+    body.dark-mode .text-gray-400 {
+      color: #94a3b8 !important;
+    }
+    body.dark-mode .text-white {
+      color: #f8fafc !important;
+    }
+    body.dark-mode .text-black {
+      color: #f8fafc !important;
+    }
+    body.dark-mode .liquid-glass {
+      background: rgba(30, 41, 59, 0.8) !important;
+    }
+    body.dark-mode .nav-link {
+      color: #cbd5e1 !important;
+    }
+    body.dark-mode .nav-link:hover {
+      color: #ff6b35 !important;
+    }
+    body.dark-mode .bg-white {
+      background: #1e293b !important;
+    }
+    body.dark-mode .bg-gray-800 {
+      background: #1e293b !important;
+    }
+    body.dark-mode .border-gray-800 {
+      border-color: #1e293b !important;
+    }
+    body.dark-mode .border-gray-700 {
+      border-color: #334155 !important;
+    }
+    body.dark-mode .glass-card {
+      background: rgba(30, 41, 59, 0.8) !important;
+    }
+    body.dark-mode .submission-modal-content {
+      background: #1e293b !important;
+      color: #e2e8f0 !important;
+    }
+    body.dark-mode .chatbot-sidebar {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%) !important;
+    }
+    body.dark-mode input[type="text"],
+    body.dark-mode textarea {
+      background: #1e293b !important;
+      border-color: #475569 !important;
+      color: #e2e8f0 !important;
+    }
+    body.dark-mode input[type="text"]:focus,
+    body.dark-mode textarea:focus {
+      border-color: #ff6b35 !important;
+      background: #1e293b !important;
+    }
+    body.dark-mode input[type="text"]::placeholder,
+    body.dark-mode textarea::placeholder {
+      color: #64748b !important;
+    }
+    body.dark-mode label {
+      color: #cbd5e1 !important;
+    }
+  </style>
+  <script>
+    tailwind.config = { theme: { extend: { colors: { 'orange-primary':'#ff6b35','orange-secondary':'#ff8c42' }, fontFamily: { inter:['Inter','sans-serif'] } } } }
+  </script>
+</head>
+<body class="bg-gray-200 font-inter overflow-x-hidden">
+  <!-- Navigation -->
+  <nav class="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-11/12 max-w-6xl">
+    <div class="liquid-glass rounded-full px-6 py-3 relative">
+      <div class="flex justify-between items-center">
+        <div class="flex items-center space-x-2">
+          <div class="w-8 h-8 bg-gradient-to-br from-orange-primary to-orange-secondary rounded-lg flex items-center justify-center"><span class="text-white font-bold text-sm">M</span></div>
+          <span class="text-gray-800 font-semibold text-lg">MAHE</span>
+        </div>
+        <div class="hidden md:flex items-center space-x-8 ml-auto">
+          <a href="index-tailwind.html" class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors font-medium">Home</a>
+          <a href="about.html" class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors font-medium">About Us</a>
+          <a href="events.html" class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors font-medium">Events</a>
+          <a href="resources.html" class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors font-medium">Resources</a>
+          <a href="contact.html" class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors font-medium">Contact</a>
+        </div>
+        <div class="hidden md:flex items-center space-x-4 ml-4">
+          <a href="profile.html" class="w-10 h-10 rounded-full bg-orange-primary text-white flex items-center justify-center">
+            <i class="fas fa-user"></i>
+          </a>
+        </div>
+        <button class="md:hidden text-gray-700" id="mobile-menu-btn"><i class="fas fa-bars text-xl"></i></button>
+      </div>
+      <!-- Mobile Menu -->
+      <div id="mobile-menu" class="hidden md:hidden mt-4 pb-2">
+        <div class="flex flex-col space-y-4">
+          <a href="index-tailwind.html" class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors font-medium">Home</a>
+          <a href="about.html" class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors font-medium">About Us</a>
+          <a href="events.html" class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors font-medium">Events</a>
+          <a href="resources.html" class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors font-medium">Resources</a>
+          <a href="contact.html" class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors font-medium">Contact</a>
+          <a href="profile.html" class="w-10 h-10 rounded-full bg-orange-primary text-white flex items-center justify-center">
+            <i class="fas fa-user"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <section class="pt-32 pb-24 bg-gray-50 min-h-screen main-content" id="mainContent">
+    <div class="container mx-auto px-6 lg:px-12">
+      <div class="max-w-4xl mx-auto">
+        <!-- Header -->
+        <div class="text-center mb-8">
+          <h1 class="text-4xl font-black text-gray-900 mb-4">AI Insight</h1>
+          <p class="text-gray-600">Upload your project or idea and get AI-powered analysis, ratings, and suggestions</p>
+        </div>
+
+        <!-- Upload Section -->
+        <div class="glass-card rounded-3xl p-8 mb-8">
+          <h2 class="text-2xl font-bold text-gray-800 mb-6">Upload Your Project/Idea</h2>
+          
+          <!-- Title and Description Fields -->
+          <div class="mb-6 space-y-4">
+            <div>
+              <label for="titleInput" class="block text-sm font-semibold text-gray-700 mb-2">
+                <i class="fas fa-heading mr-2 text-orange-primary"></i>Title
+              </label>
+              <input 
+                type="text" 
+                id="titleInput" 
+                placeholder="Enter a title for your project/idea"
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-primary focus:border-transparent bg-white text-gray-800 placeholder-gray-400 transition-all"
+              >
+            </div>
+            <div>
+              <label for="descriptionInput" class="block text-sm font-semibold text-gray-700 mb-2">
+                <i class="fas fa-align-left mr-2 text-orange-primary"></i>Description
+              </label>
+              <textarea 
+                id="descriptionInput" 
+                rows="4"
+                placeholder="Describe your project or idea in detail..."
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-primary focus:border-transparent bg-white text-gray-800 placeholder-gray-400 transition-all resize-none"
+              ></textarea>
+            </div>
+          </div>
+
+          <div class="upload-area" id="uploadArea">
+            <i class="fas fa-cloud-upload-alt text-5xl text-orange-primary mb-4"></i>
+            <p class="text-lg font-semibold text-gray-700 mb-2">Drag & Drop your file here</p>
+            <p class="text-sm text-gray-500 mb-4">or</p>
+            <label for="fileInput" class="inline-block bg-orange-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-orange-secondary transition-colors cursor-pointer">
+              Browse Files
+            </label>
+            <input type="file" id="fileInput" class="hidden" accept=".pdf,.doc,.docx,.txt">
+            <p class="text-xs text-gray-400 mt-4">Supported formats: PDF, DOC, DOCX, TXT (Max 10MB)</p>
+          </div>
+          <div id="fileInfo" class="hidden mt-4 p-4 bg-gray-100 rounded-lg">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center space-x-3">
+                <i class="fas fa-file text-orange-primary text-xl"></i>
+                <div>
+                  <p class="font-semibold text-gray-800" id="fileName"></p>
+                  <p class="text-sm text-gray-500" id="fileSize"></p>
+                </div>
+              </div>
+              <button id="removeFile" class="text-red-500 hover:text-red-700">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- AI Analysis Results (Hidden initially) -->
+        <div id="analysisResults" class="hidden">
+          <!-- Rating Section -->
+          <div class="glass-card rounded-3xl p-8 mb-6">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">AI Rating</h2>
+            <div class="flex items-center justify-center mb-4">
+              <div class="rating-stars" id="ratingStars">
+                <i class="fas fa-star star"></i>
+                <i class="fas fa-star star"></i>
+                <i class="fas fa-star star"></i>
+                <i class="fas fa-star star"></i>
+                <i class="fas fa-star star"></i>
+              </div>
+              <span class="ml-4 text-2xl font-bold text-gray-800" id="ratingScore">0.0</span>
+              <span class="ml-2 text-gray-500">/ 5.0</span>
+            </div>
+            <div class="grid grid-cols-3 gap-4 mt-6">
+              <div class="text-center p-4 bg-gray-100 rounded-lg">
+                <p class="text-2xl font-bold text-orange-primary" id="innovationScore">8.5</p>
+                <p class="text-sm text-gray-600">Innovation</p>
+              </div>
+              <div class="text-center p-4 bg-gray-100 rounded-lg">
+                <p class="text-2xl font-bold text-orange-primary" id="feasibilityScore">7.2</p>
+                <p class="text-sm text-gray-600">Feasibility</p>
+              </div>
+              <div class="text-center p-4 bg-gray-100 rounded-lg">
+                <p class="text-2xl font-bold text-orange-primary" id="marketScore">8.0</p>
+                <p class="text-sm text-gray-600">Market Potential</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Suggestions Section -->
+          <div class="glass-card rounded-3xl p-8 mb-6">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">AI Suggestions & Recommendations</h2>
+            <div class="space-y-4" id="suggestionsList">
+              <!-- Suggestions will be populated here -->
+            </div>
+          </div>
+          
+          <!-- Submission Prompt -->
+          <div class="glass-card rounded-3xl p-8 bg-gradient-to-br from-orange-50 to-orange-100 border-2 border-orange-200">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">What would you like to do next?</h2>
+            <p class="text-gray-600 mb-6">Your project has been analyzed. Choose your next step:</p>
+            <div class="flex flex-col sm:flex-row gap-4">
+              <button id="submitIdeaBtn" class="flex-1 bg-orange-primary text-white px-6 py-4 rounded-lg font-semibold hover:bg-orange-secondary transition-colors flex items-center justify-center space-x-2">
+                <i class="fas fa-paper-plane"></i>
+                <span>Submit This Idea</span>
+              </button>
+              <button id="testNewBtn" class="flex-1 bg-white text-orange-primary border-2 border-orange-primary px-6 py-4 rounded-lg font-semibold hover:bg-orange-50 transition-colors flex items-center justify-center space-x-2">
+                <i class="fas fa-upload"></i>
+                <span>Test a New Idea</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Submission Modal -->
+  <div class="submission-modal" id="submissionModal">
+    <div class="submission-modal-content">
+      <div class="text-center mb-6">
+        <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <i class="fas fa-check text-green-600 text-2xl"></i>
+        </div>
+        <h3 class="text-2xl font-bold text-gray-800 mb-2">Submission Successful!</h3>
+        <p class="text-gray-600">Your idea has been submitted for review. You'll receive feedback from faculty members soon.</p>
+      </div>
+      <div class="flex gap-4">
+        <button id="viewSubmissionsBtn" class="flex-1 bg-orange-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-orange-secondary transition-colors">
+          View Submissions
+        </button>
+        <button id="closeModalBtn" class="flex-1 bg-gray-200 text-gray-700 px-6 py-3 rounded-lg font-semibold hover:bg-gray-300 transition-colors">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Success Notification -->
+  <div class="success-notification" id="successNotification">
+    <i class="fas fa-check-circle text-2xl"></i>
+    <div>
+      <p class="font-semibold">Submission Successful!</p>
+      <p class="text-sm opacity-90">Your idea has been submitted for review.</p>
+    </div>
+  </div>
+
+  <!-- Chatbot Widget -->
+  <link rel="stylesheet" href="assets/chatbot.css">
+  <script src="assets/chatbot.js"></script>
+  <script>
+      document.addEventListener('DOMContentLoaded', function() {
+          setTimeout(function() {
+              const defaultLauncher = document.getElementById('mahe-chatbot-launcher');
+              if (defaultLauncher) defaultLauncher.style.display = 'none';
+              const customLauncher = document.createElement('button');
+              customLauncher.className = 'fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-gradient-to-br from-orange-primary to-orange-secondary text-white shadow-xl flex items-center justify-center hover:scale-110 transition-all duration-300';
+              customLauncher.setAttribute('aria-label', 'Open Chatbot');
+              customLauncher.innerHTML = '<i class="fas fa-comments text-2xl"></i>';
+              customLauncher.onclick = function() { if (window.MaheChatbot) window.MaheChatbot.open(); };
+              document.body.appendChild(customLauncher);
+          }, 100);
+      });
+  </script>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-white py-16">
+    <div class="container mx-auto px-6 lg:px-12">
+      <div class="grid lg:grid-cols-2 gap-12 mb-12">
+        <div>
+          <h3 class="text-2xl font-semibold mb-6 max-w-sm">Subscribe to our newsletter for the latest features and updates.</h3>
+          <form class="flex flex-col sm:flex-row gap-4 mb-4" id="newsletterForm">
+            <input type="email" placeholder="Your Email Here" required class="flex-1 px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-orange-primary transition-colors" />
+            <button type="submit" class="bg-orange-primary text-white px-8 py-3 rounded-lg font-semibold hover:bg-orange-secondary transition-colors">Subscribe</button>
+          </form>
+          <p class="text-sm text-gray-400">By subscribing, you consent to our Privacy Policy and receive updates.</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div>
+            <h4 class="font-bold mb-6 uppercase tracking-wider">Useful Links</h4>
+            <ul class="space-y-3">
+              <li><a href="about.html" class="text-gray-400 hover:text-orange-primary transition-colors">About Us</a></li>
+              <li><a href="contact.html" class="text-gray-400 hover:text-orange-primary transition-colors">Contact Us</a></li>
+              <li><a href="events.html" class="text-gray-400 hover:text-orange-primary transition-colors">Events</a></li>
+              <li><a href="resources.html" class="text-gray-400 hover:text-orange-primary transition-colors">Resources</a></li>
+              <li><a href="index-tailwind.html" class="text-gray-400 hover:text-orange-primary transition-colors">Home</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="font-bold mb-6 uppercase tracking-wider">Company</h4>
+            <ul class="space-y-3">
+              <li><a href="#" class="text-gray-400 hover:text-orange-primary transition-colors">Our Team</a></li>
+              <li><a href="#" class="text-gray-400 hover:text-orange-primary transition-colors">Leadership</a></li>
+              <li><a href="#" class="text-gray-400 hover:text-orange-primary transition-colors">Careers</a></li>
+              <li><a href="#" class="text-gray-400 hover:text-orange-primary transition-colors">Press</a></li>
+              <li><a href="#" class="text-gray-400 hover:text-orange-primary transition-colors">Purpose</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="font-bold mb-6 uppercase tracking-wider">Follow Us</h4>
+            <div class="space-y-3">
+              <a href="#" class="flex items-center space-x-2 text-gray-400 hover:text-orange-primary transition-colors"><i class="fab fa-facebook"></i><span>Facebook</span></a>
+              <a href="#" class="flex items-center space-x-2 text-gray-400 hover:text-orange-primary transition-colors"><i class="fab fa-instagram"></i><span>Instagram</span></a>
+              <a href="#" class="flex items-center space-x-2 text-gray-400 hover:text-orange-primary transition-colors"><i class="fab fa-twitter"></i><span>Twitter</span></a>
+              <a href="#" class="flex items-center space-x-2 text-gray-400 hover:text-orange-primary transition-colors"><i class="fab fa-linkedin"></i><span>LinkedIn</span></a>
+              <a href="#" class="flex items-center space-x-2 text-gray-400 hover:text-orange-primary transition-colors"><i class="fab fa-youtube"></i><span>YouTube</span></a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
+        <p class="text-gray-400 text-sm mb-4 md:mb-0">© MAHE INNOVATION CENTRE</p>
+        <div class="flex space-x-6">
+          <a href="#" class="text-gray-400 hover:text-orange-primary transition-colors text-sm">Privacy Policy</a>
+          <a href="#" class="text-gray-400 hover:text-orange-primary transition-colors text-sm">Terms of Service</a>
+          <a href="#" class="text-gray-400 hover:text-orange-primary transition-colors text-sm">Cookie Settings</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile menu toggle
+    document.getElementById('mobile-menu-btn')?.addEventListener('click', function() {
+      const menu = document.getElementById('mobile-menu');
+      menu.classList.toggle('hidden');
+    });
+
+    let currentSubmissionId = null;
+    let aiPollInterval = null;
+    let selectedFile = null;
+    const fileInput = document.getElementById('fileInput');
+    const uploadArea = document.getElementById('uploadArea');
+    const fileInfo = document.getElementById('fileInfo');
+    const fileName = document.getElementById('fileName');
+    const fileSize = document.getElementById('fileSize');
+    const removeFile = document.getElementById('removeFile');
+    const analysisResults = document.getElementById('analysisResults');
+
+    uploadArea.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      uploadArea.classList.add('dragover');
+    });
+
+    uploadArea.addEventListener('dragleave', () => {
+      uploadArea.classList.remove('dragover');
+    });
+
+    uploadArea.addEventListener('drop', (e) => {
+      e.preventDefault();
+      uploadArea.classList.remove('dragover');
+      const files = e.dataTransfer.files;
+      if (files.length > 0) {
+        handleFile(files[0]);
+      }
+    });
+
+    fileInput.addEventListener('change', (e) => {
+      if (e.target.files.length > 0) {
+        handleFile(e.target.files[0]);
+      }
+    });
+
+    async function handleFile(file) {
+      if (file.size > 10 *1024 *1024){
+        alert('File size exceeds 10MB limit');
+        return;
+      }
+
+      selectedFile = file;
+
+      fileName.textContent = file.name;
+      fileSize.textContent = (file.size/1024).toFixed(2) + ' KB';
+      fileInfo.classList.remove('hidden');
+
+      const title = titleInput.value.trim();
+      const description = descriptionInput.value.trim()
+
+      if (!title || !description) {
+        alert('Please enter title and description before uploading file');
+        return;
+      }
+
+      const token = localStorage.getItem('authToken');
+      if (!token) {
+        window.location.href = 'login.html';
+        return;
+      }
+
+      try {
+        const createRes = await fetch('/api/submissions/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ title, description })
+      });
+
+      const createData = await createRes.json();
+      currentSubmissionId = createData.submission_id;
+
+    
+      const fd = new FormData();
+      fd.append('file', file);
+
+      await fetch(`/api/submissions/${currentSubmissionId}/attach-file`, {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${token}` },
+        body: fd
+      });
+
+    
+      await fetch('/api/ai/analyze', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          submission_id: currentSubmissionId,
+          file_path: file.name 
+        })
+      });
+      startAIPolling();
+
+      } catch (err) {
+        console.error(err);
+        alert('Failed to start AI analysis');
+      }
+    }
+
+    const submitIdeaBtn = document.getElementById('submitIdeaBtn');
+    const testNewBtn = document.getElementById('testNewBtn');
+    const submissionModal = document.getElementById('submissionModal');
+    const successNotification = document.getElementById('successNotification');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    const viewSubmissionsBtn = document.getElementById('viewSubmissionsBtn');
+    const titleInput = document.getElementById('titleInput');
+    const descriptionInput = document.getElementById('descriptionInput');
+    
+    submitIdeaBtn.addEventListener('click', async () => {
+      const token = localStorage.getItem('authToken');
+
+      if (!token){
+        alert('Please log in again');
+        window.location.href = 'login.html';
+        return;
+      }
+
+      if (!currentSubmissionId) {
+        alert('Upload and analyze your idea first');
+        return;
+      }
+
+      try {
+        localStorage.setItem('latestSubmissionId', currentSubmissionId);
+        console.log("Submitting submissionId:", currentSubmissionId);
+        const submitRes = await fetch(`/api/submissions/submit/${currentSubmissionId}`,{
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          },
+        });
+        if (!submitRes.ok) {
+          const errText = await submitRes.text();
+          throw new Error(errText);
+        }
+
+        successNotification.classList.add('show');
+        setTimeout(() => {
+          successNotification.classList.remove('show');
+        }, 4000);
+        submissionModal.classList.add('show');
+      } catch (error) {
+        console.error('Submission error:', error);
+        alert(`Error submitting: ${error.message}`);
+      }
+    });
+    function startAIPolling() {
+      if (aiPollInterval) clearInterval(aiPollInterval);
+
+      aiPollInterval = setInterval(async () => {
+        const token = localStorage.getItem('authToken');
+
+        try {
+          const res = await fetch(`/api/ai/insights/${currentSubmissionId}`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+
+        if (!res.ok) return;
+
+        const data = await res.json();
+
+        if (data.status !== 'completed') return;
+
+        const parsed = JSON.parse(data.insights);
+        renderAIResults(parsed);
+
+        clearInterval(aiPollInterval);
+      } catch (err) {
+        console.error('[AI polling error]', err);
+      }
+    }, 3000);
+}
+  function renderAIResults(ai) {
+    console.log('[AI UI] Parsed insights:', ai);
+
+    const viability = ai.viability;
+    const fit = ai.fit;
+    const recommendations = ai.recommendations;
+
+    const rating = (viability.market_viability_score / 20).toFixed(1);
+    document.getElementById('ratingScore').textContent = rating;
+
+
+    const stars = document.querySelectorAll('#ratingStars .star');
+    stars.forEach((star, i) => {
+      star.classList.toggle('filled', i < Math.round(rating));
+    });
+
+    document.getElementById('innovationScore').textContent =
+      fit.unique_value_proposition_strength ?? '–';
+
+    document.getElementById('feasibilityScore').textContent =
+      viability.market_viability_score ?? '–';
+
+    document.getElementById('marketScore').textContent =
+      viability.market_size_rating?.toUpperCase() ?? '–';
+
+    // Suggestions
+    const suggestionsList = document.getElementById('suggestionsList');
+    suggestionsList.innerHTML = '';
+
+    (viability.key_market_insights || []).forEach(text => {
+      suggestionsList.innerHTML += `
+        <div class="p-4 bg-gray-100 rounded-lg border-l-4 border-orange-primary">
+          <p class="text-gray-700">${text}</p>
+        </div>
+      `;
+    });
+    analysisResults.classList.remove('hidden');
+
+    // Optional chatbot nudge
+    window.MaheChatbot?.open?.();
+    window.MaheChatbot?.addBotMessage?.(
+      "I've analyzed your idea. Ask me about improvements, risks, or next steps."
+    );
+  }
+
+    testNewBtn.addEventListener('click', () => {
+      // Reset everything
+      titleInput.value = '';
+      descriptionInput.value = '';
+      document.getElementById('analysisResults').classList.add('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    closeModalBtn.addEventListener('click', () => {
+      submissionModal.classList.remove('show');
+    });
+
+    viewSubmissionsBtn.addEventListener('click', () => {
+      window.location.href = 'submissions.html';
+    });
+    submissionModal.addEventListener('click', (e) => {
+      if (e.target === submissionModal) {
+        submissionModal.classList.remove('show');
+
+      }
+    });
+
+    document.getElementById('newsletterForm')?.addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert('Thank you for subscribing!');
+      this.reset();
+    });
+
+    (function() {
+      const savedTheme = localStorage.getItem('theme');
+      const savedSystemTheme = localStorage.getItem('systemTheme');
+      const body = document.body;
+
+      function applySystemTheme() {
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          body.classList.add('dark-mode');
+        } else {
+          body.classList.remove('dark-mode');
+        }
+      }
+
+      if (savedSystemTheme === 'true') {
+        applySystemTheme();
+        if (window.matchMedia) {
+          window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applySystemTheme);
+        }
+      } else if (savedTheme === 'dark') {
+        body.classList.add('dark-mode');
+      }
+    })();
+  </script>
+</body>
+</html>
+

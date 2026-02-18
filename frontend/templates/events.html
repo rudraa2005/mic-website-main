@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Events - MAHE Innovation Centre</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+
+    .liquid-glass { background: rgba(255,255,255,.1); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,.2); box-shadow: 0 8px 32px rgba(31,38,135,.37); }
+    .liquid-glass::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg, rgba(255,255,255,.4), rgba(255,255,255,.1)); border-radius:inherit; z-index:-1; }
+
+    .nav-link::before { content:""; position:absolute; bottom:-5px; left:50%; width:0; height:2px; background:linear-gradient(90deg,#ff6b35,#ff8c42); transition:all .3s ease; transform:translateX(-50%); border-radius:2px; }
+    .nav-link:hover::before { width:100%; }
+
+    .orange-blob { background: linear-gradient(135deg,#ff6b35 0%,#ff8c42 100%); border-radius:30% 70% 70% 30%/30% 30% 70% 70%; animation: blob 8s ease-in-out infinite; }
+    @keyframes blob { 0%,100%{border-radius:30% 70% 70% 30%/30% 30% 70% 70%} 25%{border-radius:58% 42% 75% 25%/76% 46% 54% 24%} 50%{border-radius:50% 50% 33% 67%/55% 27% 73% 45%} 75%{border-radius:33% 67% 58% 42%/63% 68% 32% 37%} }
+
+    .event-card { 
+      background: #0f0f10; 
+      transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      will-change: transform, box-shadow, height;
+      min-height: 16rem;
+    }
+    .event-card:hover {
+      transform: scale(1.2) translateY(-20px);
+      box-shadow: 0 40px 80px rgba(0, 0, 0, 0.5), 0 0 0 2px rgba(255, 107, 53, 0.3);
+      z-index: 30;
+      min-height: 20rem;
+    }
+    .date-badge { background:#ff6b35; color:#fff; }
+    
+    /* Hover overlay for extra information */
+    .event-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, rgba(255, 107, 53, 0.98), rgba(255, 140, 66, 0.98));
+      opacity: 0;
+      transform: scale(0.85) translateY(20px);
+      transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      padding: 2.5rem 2rem;
+      text-align: center;
+      backdrop-filter: blur(15px);
+      border-radius: 1rem;
+    }
+    .event-card:hover .event-overlay {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+    .event-overlay h3 {
+      font-size: 1.75rem;
+      font-weight: 900;
+      color: white;
+      margin-bottom: 1.25rem;
+      transform: translateY(30px);
+      transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+    .event-card:hover .event-overlay h3 {
+      transform: translateY(0);
+    }
+    .event-overlay p {
+      font-size: 1rem;
+      color: rgba(255, 255, 255, 0.95);
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+      transform: translateY(30px);
+      transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.15s;
+      max-height: 4rem;
+      overflow: hidden;
+    }
+    .event-card:hover .event-overlay p {
+      transform: translateY(0);
+      max-height: 8rem;
+    }
+    .event-overlay .event-details {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.9);
+      transform: translateY(30px);
+      transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.3s;
+      width: 100%;
+    }
+    .event-card:hover .event-overlay .event-details {
+      transform: translateY(0);
+    }
+    .event-overlay .event-details span {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.5rem;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 0.5rem;
+      backdrop-filter: blur(5px);
+    }
+    .event-overlay .register-btn {
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border-radius: 2rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      transition: all 0.3s ease;
+      transform: translateY(30px);
+      transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.4s;
+      margin-top: 1rem;
+    }
+    .event-card:hover .event-overlay .register-btn {
+      transform: translateY(0);
+    }
+    .event-overlay .register-btn:hover {
+      background: rgba(255, 255, 255, 0.3);
+      border-color: rgba(255, 255, 255, 0.5);
+      transform: scale(1.05);
+    }
+
+    /* Dark Mode Styles */
+    body.dark-mode {
+      background: #0f172a;
+      color: #e2e8f0;
+    }
+    body.dark-mode .bg-gray-50,
+    body.dark-mode .bg-gray-100,
+    body.dark-mode .bg-gray-200 {
+      background: #1e293b !important;
+    }
+    body.dark-mode .bg-gray-900 {
+      background: #0f172a !important;
+    }
+    body.dark-mode .text-gray-800,
+    body.dark-mode .text-gray-900 {
+      color: #e2e8f0 !important;
+    }
+    body.dark-mode .text-gray-600,
+    body.dark-mode .text-gray-700 {
+      color: #cbd5e1 !important;
+    }
+    body.dark-mode .text-gray-500 {
+      color: #94a3b8 !important;
+    }
+    body.dark-mode .text-gray-400 {
+      color: #94a3b8 !important;
+    }
+    body.dark-mode .text-white {
+      color: #f8fafc !important;
+    }
+    body.dark-mode .text-black {
+      color: #f8fafc !important;
+    }
+    body.dark-mode .liquid-glass {
+      background: rgba(30, 41, 59, 0.8) !important;
+    }
+    body.dark-mode .nav-link {
+      color: #cbd5e1 !important;
+    }
+    body.dark-mode .nav-link:hover {
+      color: #ff6b35 !important;
+    }
+    body.dark-mode .bg-white {
+      background: #1e293b !important;
+    }
+    body.dark-mode .bg-gray-800 {
+      background: #1e293b !important;
+    }
+    body.dark-mode .border-gray-800 {
+      border-color: #1e293b !important;
+    }
+    body.dark-mode .border-gray-700 {
+      border-color: #334155 !important;
+    }
+    body.dark-mode input[type="email"] {
+      background: #1e293b !important;
+      border-color: #334155 !important;
+      color: #e2e8f0 !important;
+    }
+    body.dark-mode input::placeholder {
+      color: #64748b !important;
+    }
+  </style>
+  <script>
+    tailwind.config = { theme: { extend: { colors: { 'orange-primary':'#ff6b35','orange-secondary':'#ff8c42' }, fontFamily: { inter:['Inter','sans-serif'] } } } }
+  </script>
+</head>
+<body class="bg-gray-200 font-inter overflow-x-hidden">
+  <!-- Navigation -->
+  <nav class="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-11/12 max-w-6xl">
+    <div class="liquid-glass rounded-full px-6 py-3 relative">
+      <div class="flex justify-between items-center">
+        <div class="flex items-center space-x-2">
+          <div class="w-8 h-8 bg-gradient-to-br from-orange-primary to-orange-secondary rounded-lg flex items-center justify-center"><span class="text-white font-bold text-sm">M</span></div>
+          <span class="text-gray-800 font-semibold text-lg">MAHE</span>
+        </div>
+        <div class="hidden md:flex items-center space-x-8 ml-auto">
+          <a href="/index" class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors font-medium">Home</a>
+          <a href="/about" class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors font-medium">About Us</a>
+          <a href="/events" class="nav-link relative text-orange-primary font-medium">Events</a>
+          <a href="/resources" class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors font-medium">Resources</a>
+          <a href="/contact" class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors font-medium">Contact</a>
+          <a href="profile.html"
+            class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-600 hover:bg-orange-primary hover:text-white transition">
+            <i class="fas fa-user"></i>
+          </a>
+        </div>
+        <button class="md:hidden text-gray-700" id="mobile-menu-btn"><i class="fas fa-bars text-xl"></i></button>
+      </div>
+      <!-- Mobile Menu -->
+      <div id="mobile-menu" class="hidden md:hidden mt-4 pb-2">
+        <div class="flex flex-col space-y-4">
+          <a href="index-tailwind.html" class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors font-medium">Home</a>
+          <a href="about.html" class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors font-medium">About Us</a>
+          <a href="events.html" class="nav-link relative text-orange-primary font-medium">Events</a>
+          <a href="resources.html" class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors font-medium">Resources</a>
+          <a href="contact.html" class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors font-medium">Contact</a>
+          <a href="profile.html" class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-600 hover:bg-orange-primary hover:text-white transition-colors duration-300">
+            <i class="fas fa-user"></i>
+          </a>
+        </div>
+      </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero with background image and orange overlay -->
+  <header class="relative h-[52vh] min-h-[360px] flex items-end mt-20">
+    <div class="absolute inset-0 w-full h-full bg-gradient-to-br from-orange-primary/40 to-orange-secondary/40"></div>
+    <div class="absolute inset-0 bg-[#ff6b35]/40 mix-blend-multiply"></div>
+    <div class="absolute inset-0 bg-black/30"></div>
+    <div class="container mx-auto px-6 lg:px-12 pb-10 relative z-10">
+      <p class="text-[10px] tracking-[0.35em] text-black/80 font-semibold">WHAT WE HAVE DONE</p>
+      <h1 class="mt-3 text-[56px] md:text-[84px] leading-none font-black text-black drop-shadow-[0_2px_0_rgba(0,0,0,0.2)]">EVENTS</h1>
+    </div>
+  </header>
+
+  <main class="bg-gray-900">
+    <!-- spacer strip to mimic screenshot separator -->
+    <div class="h-16 bg-gray-900"></div>
+
+    <!-- Events grid on light background -->
+    <section class="bg-gray-200">
+      <div class="container mx-auto px-6 lg:px-12 py-12">
+        <div id="eventsGrid" class="grid md:grid-cols-3 gap-6">
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-white py-16">
+    <div class="container mx-auto px-6 lg:px-12">
+      <div class="grid lg:grid-cols-2 gap-12 mb-12">
+        <div>
+          <h3 class="text-2xl font-semibold mb-6 max-w-sm">Subscribe to our newsletter for the latest features and updates.</h3>
+          <form class="flex flex-col sm:flex-row gap-4 mb-4" id="newsletterForm">
+            <input type="email" placeholder="Your Email Here" required class="flex-1 px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-orange-primary transition-colors" />
+            <button type="submit" class="bg-orange-primary text-white px-8 py-3 rounded-lg font-semibold hover:bg-orange-secondary transition-colors">Subscribe</button>
+          </form>
+          <p class="text-sm text-gray-400">By subscribing, you consent to our Privacy Policy and receive updates.</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div>
+            <h4 class="font-bold mb-6 uppercase tracking-wider">Useful Links</h4>
+            <ul class="space-y-3">
+              <li><a href="about.html" class="text-gray-400 hover:text-orange-primary transition-colors">About Us</a></li>
+              <li><a href="contact.html" class="text-gray-400 hover:text-orange-primary transition-colors">Contact Us</a></li>
+              <li><a href="#" class="text-gray-400 hover:text-orange-primary transition-colors">Blog Posts</a></li>
+              <li><a href="#" class="text-gray-400 hover:text-orange-primary transition-colors">Help Center</a></li>
+              <li><a href="#" class="text-gray-400 hover:text-orange-primary transition-colors">Careers</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="font-bold mb-6 uppercase tracking-wider">Connect With Us</h4>
+            <ul class="space-y-3">
+              <li><a href="#" class="text-gray-400 hover:text-orange-primary transition-colors">Join Us</a></li>
+              <li><a href="#" class="text-gray-400 hover:text-orange-primary transition-colors">Our Team</a></li>
+              <li><a href="events.html" class="text-gray-400 hover:text-orange-primary transition-colors">Events</a></li>
+              <li><a href="resources.html" class="text-gray-400 hover:text-orange-primary transition-colors">Resources</a></li>
+              <li><a href="#" class="text-gray-400 hover:text-orange-primary transition-colors">Support</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="font-bold mb-6 uppercase tracking-wider">Follow Us</h4>
+            <div class="space-y-3">
+              <a href="#" class="flex items-center space-x-2 text-gray-400 hover:text-orange-primary transition-colors"><i class="fab fa-facebook"></i><span>Facebook</span></a>
+              <a href="#" class="flex items-center space-x-2 text-gray-400 hover:text-orange-primary transition-colors"><i class="fab fa-instagram"></i><span>Instagram</span></a>
+              <a href="#" class="flex items-center space-x-2 text-gray-400 hover:text-orange-primary transition-colors"><i class="fab fa-twitter"></i><span>Twitter</span></a>
+              <a href="#" class="flex items-center space-x-2 text-gray-400 hover:text-orange-primary transition-colors"><i class="fab fa-linkedin"></i><span>LinkedIn</span></a>
+              <a href="#" class="flex items-center space-x-2 text-gray-400 hover:text-orange-primary transition-colors"><i class="fab fa-youtube"></i><span>YouTube</span></a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
+        <p class="text-gray-400 text-sm mb-4 md:mb-0">© MAHE INNOVATION CENTRE</p>
+        <div class="flex space-x-6">
+          <a href="#" class="text-gray-400 hover:text-orange-primary transition-colors text-sm">Privacy Policy</a>
+          <a href="#" class="text-gray-400 hover:text-orange-primary transition-colors text-sm">Terms of Service</a>
+          <a href="#" class="text-gray-400 hover:text-orange-primary transition-colors text-sm">Cookie Settings</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile menu toggle
+    document.getElementById('mobile-menu-btn')?.addEventListener('click', function() {
+      const menu = document.getElementById('mobile-menu');
+      menu.classList.toggle('hidden');
+    });
+
+    // Event registration buttons
+    document.querySelectorAll('.register-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        alert('Registration feature coming soon! Please contact us for more information.');
+      });
+    });
+
+    // Newsletter form handling
+    document.getElementById('newsletterForm')?.addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const emailInput = this.querySelector('input[type="email"]');
+            const button = this.querySelector('button');
+            const email = emailInput.value.trim();
+
+            if (!email || !email.includes('@')) {
+                alert('Enter a valid email');
+                return;
+            }
+
+            button.disabled = true;
+            button.textContent = 'Subscribing...';
+
+            try {
+                const res = await fetch('/api/newsletter/subscribe', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email })
+                });
+
+                if (!res.ok) {
+                    const text = await res.text();
+                    throw new Error(text);
+                }
+
+                alert('Subscribed successfully! Check your email.');
+                this.reset();
+                } catch (err) {
+                    console.error(err);
+                    alert('Subscription failed. Try again.');
+                } finally {
+                    button.disabled = false;
+                    button.textContent = 'Subscribe';
+                }
+        });
+
+    // Dark mode initialization
+    (function() {
+      const savedTheme = localStorage.getItem('theme');
+      const savedSystemTheme = localStorage.getItem('systemTheme');
+      const body = document.body;
+
+      function applySystemTheme() {
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          body.classList.add('dark-mode');
+        } else {
+          body.classList.remove('dark-mode');
+        }
+      }
+
+      if (savedSystemTheme === 'true') {
+        applySystemTheme();
+        // Listen for system theme changes
+        if (window.matchMedia) {
+          window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applySystemTheme);
+        }
+      } else if (savedTheme === 'dark') {
+        body.classList.add('dark-mode');
+      }
+    })();
+  </script>
+  <!-- Chatbot Widget -->
+  <link rel="stylesheet" href="assets/chatbot.css">
+  <script src="assets/chatbot.js"></script>
+  <script>
+      document.addEventListener('DOMContentLoaded', function() {
+          setTimeout(function() {
+              const defaultLauncher = document.getElementById('mahe-chatbot-launcher');
+              if (defaultLauncher) defaultLauncher.style.display = 'none';
+              const customLauncher = document.createElement('button');
+              customLauncher.className = 'fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-gradient-to-br from-orange-primary to-orange-secondary text-white shadow-xl flex items-center justify-center hover:scale-110 transition-all duration-300';
+              customLauncher.setAttribute('aria-label', 'Open Chatbot');
+              customLauncher.innerHTML = '<i class="fas fa-comments text-2xl"></i>';
+              customLauncher.onclick = function() { if (window.MaheChatbot) window.MaheChatbot.open(); };
+              document.body.appendChild(customLauncher);
+          }, 100);
+      });
+  </script>
+  <script src="/static/js/events.js" defer></script>
+</body>
+</html>
+

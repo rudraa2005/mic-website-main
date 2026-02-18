@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Works - MAHE Innovation Centre</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://api.fontshare.com/v2/css?f[]=clash-display@200,300,400,500,600,700&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#FF6B35",
+                        "navy-dark": "#0F172A",
+                        "navy-deep": "#080C14",
+                        "background-light": "#F8FAFC",
+                        "background-dark": "#020617",
+                        "footer-bg": "#0B1120",
+                    },
+                    fontFamily: {
+                        display: ["'Clash Display'", "sans-serif"],
+                        sans: ["'Inter'", "sans-serif"],
+                    },
+                    borderRadius: {
+                        'DEFAULT': '0.75rem',
+                        'xl': '1.25rem',
+                        '2xl': '2rem',
+                    },
+                },
+            },
+        };
+    </script>
+    <style type="text/tailwindcss">
+        .custom-gradient-bg {
+            background: radial-gradient(circle at 0% 0%, rgba(255, 107, 53, 0.05) 0%, transparent 40%),
+                        radial-gradient(circle at 100% 100%, rgba(255, 107, 53, 0.05) 0%, transparent 40%);
+        }
+        .liquid-glass {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+        
+        .liquid-glass::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.1));
+            border-radius: inherit;
+            z-index: -1;
+        }
+        .text-vertical {
+            writing-mode: vertical-rl;
+        }
+        
+        /* Navigation link hover effects */
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #ff6b35, #ff8c42);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+        
+        .nav-link:hover::before {
+            width: 100%;
+        }
+</style>
+</head>
+
+<body class="bg-background-light text-slate-900 font-sans transition-colors duration-300">
+    <!-- Liquid Glass Navigation -->
+    <nav class="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 w-11/12 max-w-6xl">
+        <div class="liquid-glass rounded-full px-6 py-3 relative">
+            <div class="flex justify-between items-center">
+                <!-- Logo -->
+                <div class="flex items-center space-x-2">
+                    <div
+                        class="w-8 h-8 bg-gradient-to-br from-orange-primary to-orange-secondary rounded-lg flex items-center justify-center">
+                        <span class="text-white font-bold text-sm">M</span>
+                    </div>
+                    <span class="text-gray-800 font-semibold text-lg">MAHE</span>
+                </div>
+
+                <!-- Navigation Links -->
+                <div class="hidden md:flex items-center space-x-8 ml-auto">
+                    <a href="index-tailwind.html"
+                        class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors duration-300 font-medium">Home</a>
+                    <a href="about.html"
+                        class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors duration-300 font-medium">About
+                        Us</a>
+                    <a href="events.html"
+                        class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors duration-300 font-medium">Events</a>
+                    <a href="work.html"
+                        class="nav-link relative text-gray-700 hover:text-primary transition-colors duration-300 font-medium">Incubation</a>
+                    <a href="resources.html"
+                        class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors duration-300 font-medium">Resources</a>
+                    <a href="contact.html"
+                        class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors duration-300 font-medium">Contact</a>
+                    <a href="profile.html"
+                        class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-600 hover:bg-orange-primary hover:text-white transition">
+                        <i class="fas fa-user"></i>
+                    </a>
+                </div>
+
+                <button class="md:hidden text-gray-700 hover:text-orange-primary transition-colors"
+                    id="mobile-menu-btn">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="hidden md:hidden mt-4 pb-2">
+                <div class="flex flex-col space-y-4">
+                    <a href="index-tailwind.html"
+                        class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors duration-300 font-medium">Home</a>
+                    <a href="about.html"
+                        class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors duration-300 font-medium">About
+                        Us</a>
+                    <a href="events.html"
+                        class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors duration-300 font-medium">Events</a>
+                    <a href="work.html"
+                        class="nav-link relative text-gray-700 hover:text-primary transition-colors duration-300 font-medium">Incubation</a>
+                    <a href="resources.html"
+                        class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors duration-300 font-medium">Resources</a>
+                    <a href="contact.html"
+                        class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors duration-300 font-medium">Contact</a>
+                    <a href="profile.html"
+                        class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-600 hover:bg-orange-primary hover:text-white transition-colors duration-300">
+                        <i class="fas fa-user"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <section class="pt-48 pb-24 px-4 relative overflow-hidden custom-gradient-bg">
+        <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
+            <div class="relative z-10">
+                <div class="flex gap-2 mb-6">
+                    <span
+                        class="bg-navy-dark text-white text-[10px] font-bold tracking-widest px-3 py-1 rounded-full uppercase font-sans">Ideate</span>
+                    <span
+                        class="bg-navy-dark text-white text-[10px] font-bold tracking-widest px-3 py-1 rounded-full uppercase font-sans">Scale</span>
+                    <span
+                        class="bg-navy-dark text-white text-[10px] font-bold tracking-widest px-3 py-1 rounded-full uppercase font-sans">Launch</span>
+                </div>
+                <h1 class="font-display text-6xl md:text-8xl font-bold text-navy-dark leading-[0.9] mb-8">
+                    The<br />
+                    Startup<br />
+                    <span class="text-primary">Showcase</span>
+                </h1>
+                <div class="flex items-center gap-4 mt-12">
+                    <span class="font-display text-6xl font-bold text-navy-dark" id="project-count-hero">00</span>
+                    <div class="h-1 w-12 bg-primary"></div>
+                    <span class="text-sm font-bold tracking-[0.2em] uppercase text-slate-400 font-sans">Project
+                        Portfolio</span>
+                </div>
+            </div>
+            <div class="relative" id="featured-project-container">
+                <!-- Featured project injected via JS -->
+            </div>
+        </div>
+    </section>
+    <main class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="mb-20 border-l-4 border-primary pl-8 relative">
+                <h2 class="text-4xl font-display font-bold text-navy-dark mb-2 uppercase tracking-tight">Active Pipeline
+                </h2>
+                <p class="text-slate-500 text-lg font-sans">Our curated ecosystem of high-growth ventures.</p>
+                <div class="absolute right-0 top-0">
+                    <div
+                        class="w-12 h-12 bg-primary rounded-full flex items-center justify-center shadow-lg shadow-primary/30">
+                        <span class="material-symbols-outlined text-white">chat_bubble</span>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-32" id="stage1-wrapper">
+                <div class="flex items-center gap-4 mb-10">
+                    <div
+                        class="bg-primary/10 text-primary px-4 py-1.5 rounded-full text-[10px] font-bold border border-primary/20 uppercase tracking-widest font-sans">
+                        PHASE 1</div>
+                    <h3 class="text-2xl font-bold font-display">Under Incubation</h3>
+                </div>
+                <div id="stage1-projects" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Projects injected via JS -->
+                </div>
+            </div>
+            <div class="mb-32" id="stage2-wrapper">
+                <div class="flex items-center gap-4 mb-10">
+                    <div
+                        class="bg-primary/10 text-primary px-4 py-1.5 rounded-full text-[10px] font-bold border border-primary/20 uppercase tracking-widest font-sans">
+                        PHASE 2</div>
+                    <h3 class="text-2xl font-bold font-display">Looking for Funding</h3>
+                </div>
+                <div id="stage2-projects" class="grid lg:grid-cols-2 gap-10">
+                    <!-- Projects injected via JS -->
+                </div>
+            </div>
+            <div id="stage3-wrapper">
+                <div class="flex items-center gap-4 mb-10">
+                    <div
+                        class="bg-primary/10 text-primary px-4 py-1.5 rounded-full text-[10px] font-bold border border-primary/20 uppercase tracking-widest font-sans">
+                        PHASE 3</div>
+                    <h3 class="text-2xl font-bold font-display">Found Companies</h3>
+                </div>
+                <div id="stage3-projects" class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Projects injected via JS -->
+                </div>
+            </div>
+        </div>
+    </main>
+    <section class="py-24 bg-slate-50/50">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <h3 class="text-[11px] font-bold tracking-[0.4em] uppercase text-primary mb-16 font-sans">Ecosystem Partners
+            </h3>
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 items-center opacity-60"
+                id="partners-container">
+                <!-- Partners injected via JS -->
+            </div>
+        </div>
+    </section>
+    <footer class="bg-navy-dark pt-24 pb-12 text-white">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid lg:grid-cols-12 gap-16 mb-20">
+                <div class="lg:col-span-5">
+                    <h3 class="text-3xl font-display font-bold mb-8 max-w-sm">Subscribe to our newsletter for the latest
+                        updates.</h3>
+                    <div class="flex gap-0 mb-6 max-w-md">
+                        <input
+                            class="bg-white/5 border-white/10 rounded-l-xl px-6 py-4 flex-grow focus:ring-primary focus:border-primary text-sm placeholder-slate-500 font-sans"
+                            placeholder="Your Email Here" type="email" />
+                        <button
+                            class="bg-primary hover:bg-primary/90 text-white font-bold px-8 py-4 rounded-r-xl transition-all uppercase text-sm tracking-widest font-sans">Subscribe</button>
+                    </div>
+                    <p class="text-slate-500 text-[11px] leading-relaxed font-sans">By subscribing you agree to with our
+                        Privacy Policy and provide consent to receive updates from our company.</p>
+                </div>
+                <div class="lg:col-span-2">
+                    <h4 class="font-bold mb-8 text-white uppercase text-[11px] tracking-[0.2em] font-sans">Useful Links
+                    </h4>
+                    <ul class="space-y-4 text-slate-400 text-sm font-sans">
+                        <li><a class="hover:text-primary transition-colors" href="#">About</a></li>
+                        <li><a class="hover:text-primary transition-colors" href="#">Contact Us</a></li>
+                        <li><a class="hover:text-primary transition-colors" href="#">Events</a></li>
+                        <li><a class="hover:text-primary transition-colors" href="#">Resources</a></li>
+                        <li><a class="hover:text-primary transition-colors" href="#">Home</a></li>
+                    </ul>
+                </div>
+                <div class="lg:col-span-2">
+                    <h4 class="font-bold mb-8 text-white uppercase text-[11px] tracking-[0.2em] font-sans">Company</h4>
+                    <ul class="space-y-4 text-slate-400 text-sm font-sans">
+                        <li><a class="hover:text-primary transition-colors" href="#">Our Team</a></li>
+                        <li><a class="hover:text-primary transition-colors" href="#">Leadership</a></li>
+                        <li><a class="hover:text-primary transition-colors" href="#">Careers</a></li>
+                        <li><a class="hover:text-primary transition-colors" href="#">Press</a></li>
+                        <li><a class="hover:text-primary transition-colors" href="#">Purpose</a></li>
+                    </ul>
+                </div>
+                <div class="lg:col-span-3">
+                    <h4 class="font-bold mb-8 text-white uppercase text-[11px] tracking-[0.2em] font-sans">Follow Us
+                    </h4>
+                    <ul class="space-y-5 text-slate-400 text-sm font-sans">
+                        <li><a class="flex items-center gap-3 hover:text-primary transition-colors" href="#"><span
+                                    class="material-symbols-outlined text-[16px]">social_leaderboard</span> Facebook</a>
+                        </li>
+                        <li><a class="flex items-center gap-3 hover:text-primary transition-colors" href="#"><span
+                                    class="material-symbols-outlined text-[16px]">photo_camera</span> Instagram</a></li>
+                        <li><a class="flex items-center gap-3 hover:text-primary transition-colors" href="#"><span
+                                    class="material-symbols-outlined text-[16px]">alternate_email</span> Twitter</a>
+                        </li>
+                        <li><a class="flex items-center gap-3 hover:text-primary transition-colors" href="#"><span
+                                    class="material-symbols-outlined text-[16px]">link</span> LinkedIn</a></li>
+                        <li><a class="flex items-center gap-3 hover:text-primary transition-colors" href="#"><span
+                                    class="material-symbols-outlined text-[16px]">play_circle</span> YouTube</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div
+                class="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6 text-slate-500 text-[11px] font-sans">
+                <p>© 2024 OUR WORKS SHOWCASE. All rights reserved.</p>
+                <div class="flex gap-8">
+                    <a class="hover:text-white transition-colors" href="#">Privacy Policy</a>
+                    <a class="hover:text-white transition-colors" href="#">Terms of Service</a>
+                    <a class="hover:text-white transition-colors" href="#">Cookie Settings</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/static/js/work.js"></script>
+
+    <!-- Chatbot Widget -->
+    <link rel="stylesheet" href="assets/chatbot.css">
+    <script src="assets/chatbot.js"></script>
+
+</body>
+
+</html>

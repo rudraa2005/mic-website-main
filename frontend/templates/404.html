@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>404 - Page Not Found | MAHE Innovation Centre</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --bg: #ffffff;
+        --text: #0f172a;
+        --muted: #475569;
+        --card: #ffffff;
+        --border: #e2e8f0;
+        --shadow: 0 18px 45px rgba(15, 23, 42, 0.12);
+        --btn-secondary-bg: #ffffff;
+        --btn-secondary-hover: #f8fafc;
+        --btn-secondary-border: #cbd5e1;
+        --blob-1: rgba(255, 107, 53, 0.2);
+        --blob-2: rgba(255, 140, 66, 0.15);
+      }
+
+      body.dark-mode {
+        --bg: #0f172a;
+        --text: #e2e8f0;
+        --muted: #94a3b8;
+        --card: #0b1225;
+        --border: #334155;
+        --shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+        --btn-secondary-bg: rgba(255, 255, 255, 0.06);
+        --btn-secondary-hover: rgba(255, 255, 255, 0.1);
+        --btn-secondary-border: rgba(255, 255, 255, 0.18);
+        --blob-1: rgba(255, 107, 53, 0.35);
+        --blob-2: rgba(255, 140, 66, 0.22);
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        background: var(--bg);
+        color: var(--text);
+      }
+
+      .grad-text {
+        background: linear-gradient(135deg, #ff6b35, #ff8c42);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+
+      .error-card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow);
+      }
+
+      .muted {
+        color: var(--muted);
+      }
+
+      .btn-secondary {
+        background: var(--btn-secondary-bg);
+        border: 1px solid var(--btn-secondary-border);
+        color: var(--text);
+      }
+
+      .btn-secondary:hover {
+        background: var(--btn-secondary-hover);
+      }
+
+      .blob-1 {
+        background: var(--blob-1);
+      }
+
+      .blob-2 {
+        background: var(--blob-2);
+      }
+    </style>
+
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              "orange-primary": "#ff6b35",
+              "orange-secondary": "#ff8c42",
+              navy: "#0f172a",
+            },
+            fontFamily: {
+              inter: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+
+  <body class="min-h-screen">
+    <main class="min-h-screen flex items-center justify-center px-4">
+      <div class="w-full max-w-xl">
+        <div class="relative">
+          <!-- subtle background accents -->
+          <div class="absolute -top-16 -left-16 h-44 w-44 rounded-full blob-1 blur-3xl"></div>
+          <div class="absolute -bottom-16 -right-16 h-44 w-44 rounded-full blob-2 blur-3xl"></div>
+
+          <section class="error-card relative rounded-3xl p-8 md:p-10 text-center">
+            <div class="flex items-center justify-center gap-3 mb-6">
+              <div
+                class="w-11 h-11 rounded-xl bg-gradient-to-br from-orange-primary to-orange-secondary flex items-center justify-center font-extrabold text-white"
+                aria-hidden="true"
+              >
+                M
+              </div>
+              <div class="text-left">
+                <div class="font-extrabold tracking-wide">MAHE</div>
+                <div class="muted text-sm">Innovation Centre</div>
+              </div>
+            </div>
+
+            <div class="text-7xl md:text-8xl font-black grad-text leading-none">404</div>
+            <h1 class="mt-4 text-2xl md:text-3xl font-extrabold">Page not found</h1>
+            <p class="mt-3 muted">
+              The page you’re looking for doesn’t exist (or may have been moved).
+            </p>
+
+            <div class="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
+              <a
+                href="index-tailwind.html"
+                class="inline-flex items-center justify-center px-6 py-3 rounded-xl font-semibold bg-gradient-to-r from-orange-primary to-orange-secondary text-white hover:opacity-95 transition"
+              >
+                Back to Home
+              </a>
+              <button
+                type="button"
+                onclick="history.back()"
+                class="btn-secondary inline-flex items-center justify-center px-6 py-3 rounded-xl font-semibold transition"
+              >
+                Go Back
+              </button>
+            </div>
+
+            <div class="mt-6 text-sm muted">
+              Or try: <a href="events.html" class="text-orange-primary hover:underline">Events</a>,
+              <a href="resources.html" class="text-orange-primary hover:underline">Resources</a>,
+              <a href="contact.html" class="text-orange-primary hover:underline">Contact</a>
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Dark mode initialization (matches the rest of the site)
+      (function () {
+        const savedTheme = localStorage.getItem('theme');
+        const savedSystemTheme = localStorage.getItem('systemTheme');
+        const body = document.body;
+
+        function applySystemTheme() {
+          if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            body.classList.add('dark-mode');
+          } else {
+            body.classList.remove('dark-mode');
+          }
+        }
+
+        if (savedSystemTheme === 'true') {
+          applySystemTheme();
+          if (window.matchMedia) {
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applySystemTheme);
+          }
+        } else if (savedTheme === 'dark') {
+          body.classList.add('dark-mode');
+        }
+      })();
+    </script>
+  </body>
+</html>

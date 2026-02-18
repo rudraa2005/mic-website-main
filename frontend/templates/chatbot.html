@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot - MAHE Innovation Centre</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/chatbot.css">
+    <style>
+        body { 
+            font-family: 'Inter', sans-serif; 
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            overflow: hidden;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(4px);
+        }
+        .chatbot-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(4px);
+            z-index: 9998;
+        }
+        .chatbot-panel-wrapper {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: min(420px, 100vw);
+            height: 100vh;
+            z-index: 9999;
+        }
+        @media (max-width: 520px) {
+            .chatbot-panel-wrapper {
+                width: 100vw;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-inter">
+    <!-- Backdrop -->
+    <div class="chatbot-backdrop" onclick="history.back()"></div>
+
+    <!-- Chatbot Panel Wrapper -->
+    <div class="chatbot-panel-wrapper">
+        <div class="mahe-chatbot__panel" id="mahe-chatbot-panel" style="position: relative; width: 100%; height: 100%; transform: translateX(0); border-left: 1px solid rgba(15, 23, 42, 0.12);">
+            <div class="mahe-chatbot__header">
+                <div class="mahe-chatbot__title">
+                    <div class="mahe-chatbot__avatar" aria-hidden="true">∞∞</div>
+                    <div class="mahe-chatbot__titleText">
+                        <strong>MAHE Assistant</strong>
+                        <span>Ask anything about MAHE Innovation Centre</span>
+                    </div>
+                </div>
+                <div class="mahe-chatbot__headerActions">
+                    <button type="button" class="mahe-chatbot__iconBtn" id="mahe-chatbot-clear" aria-label="Clear chat">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                    <a href="javascript:history.back()" class="mahe-chatbot__iconBtn" aria-label="Close chat">
+                        <i class="fas fa-times"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="mahe-chatbot__messages" id="mahe-chatbot-messages"></div>
+            <div class="mahe-chatbot__composer">
+                <div id="mahe-chatbot-file-preview"></div>
+                <div class="mahe-chatbot__inputWrap">
+                    <input type="file" class="mahe-chatbot__fileInput" id="mahe-chatbot-file-input" multiple accept="*/*">
+                    <button type="button" class="mahe-chatbot__actionBtn mahe-chatbot__attachBtn" id="mahe-chatbot-attach" aria-label="Attach file">
+                        <i class="fas fa-paperclip"></i>
+                    </button>
+                    <textarea class="mahe-chatbot__input" id="mahe-chatbot-input" rows="1" placeholder="Type a message… (Enter to send, Shift+Enter for new line)"></textarea>
+                    <button type="button" class="mahe-chatbot__actionBtn mahe-chatbot__voiceBtn" id="mahe-chatbot-voice" aria-label="Voice input">
+                        <i class="fas fa-microphone"></i>
+                    </button>
+                    <button class="mahe-chatbot__send" id="mahe-chatbot-send" type="button" aria-label="Send">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/chatbot.js"></script>
+    <script>
+        // Initialize chatbot when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Wait for chatbot.js to initialize, then open the panel
+            setTimeout(function() {
+                if (window.MaheChatbot) {
+                    window.MaheChatbot.open();
+                }
+                // Focus input after initialization
+                const input = document.getElementById('mahe-chatbot-input');
+                if (input) {
+                    setTimeout(() => input.focus(), 200);
+                }
+            }, 100);
+        });
+    </script>
+</body>
+</html>

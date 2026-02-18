@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="refresh" content="0; url=index-tailwind.html">
+    <title>MAHE Innovation Centre - Redirecting...</title>
+</head>
+<body>
+    <p>If you are not redirected automatically, <a href="index-tailwind.html">click here</a>.</p>
+  <!-- Chatbot Widget -->
+  <link rel="stylesheet" href="assets/chatbot.css">
+  <script src="assets/chatbot.js"></script>
+  <script>
+      document.addEventListener('DOMContentLoaded', function() {
+          setTimeout(function() {
+              const defaultLauncher = document.getElementById('mahe-chatbot-launcher');
+              if (defaultLauncher) defaultLauncher.style.display = 'none';
+              const customLauncher = document.createElement('button');
+              customLauncher.className = 'fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-gradient-to-br from-orange-primary to-orange-secondary text-white shadow-xl flex items-center justify-center hover:scale-110 transition-all duration-300';
+              customLauncher.setAttribute('aria-label', 'Open Chatbot');
+              customLauncher.innerHTML = '<i class="fas fa-comments text-2xl"></i>';
+              customLauncher.onclick = function() { if (window.MaheChatbot) window.MaheChatbot.open(); };
+              document.body.appendChild(customLauncher);
+          }, 100);
+      });
+  </script>
+</body>
+</html>

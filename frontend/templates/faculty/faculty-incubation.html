@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Incubation Portfolio - MAHE Innovation Centre</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .liquid-glass {
+            background: rgba(255, 255, 255, .1);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, .2);
+            box-shadow: 0 8px 32px rgba(31, 38, 135, .37);
+        }
+
+        .liquid-glass::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, .4), rgba(255, 255, 255, .1));
+            border-radius: inherit;
+            z-index: -1;
+        }
+
+        .nav-link::before {
+            content: "";
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #ff6b35, #ff8c42);
+            transition: all .3s ease;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+
+        .nav-link:hover::before {
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body class="bg-slate-50 min-h-screen">
+    <nav class="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-11/12 max-w-6xl">
+        <div class="liquid-glass rounded-full px-6 py-3 relative">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-2">
+                    <div
+                        class="w-8 h-8 bg-gradient-to-br from-orange-500 to-orange-400 rounded-lg flex items-center justify-center">
+                        <span class="text-white font-bold text-sm">M</span>
+                    </div>
+                    <span class="text-gray-800 font-semibold text-lg">MAHE</span>
+                </div>
+                <div class="hidden md:flex items-center space-x-8 ml-auto">
+                    <a href="faculty-dashboard.html"
+                        class="nav-link relative text-gray-700 hover:text-orange-500 transition-colors font-medium">Dashboard</a>
+                    <a href="faculty-committee.html"
+                        class="nav-link relative text-gray-700 hover:text-orange-500 transition-colors font-medium">Committee</a>
+                    <a href="faculty-events.html"
+                        class="nav-link relative text-gray-700 hover:text-orange-500 transition-colors font-medium">Events</a>
+                    <a href="faculty-reviews.html"
+                        class="nav-link relative text-gray-700 hover:text-orange-500 transition-colors font-medium">Reviews</a>
+                    <a href="faculty-incubation.html"
+                        class="nav-link relative text-orange-500 hover:text-orange-500 transition-colors font-medium font-bold">Incubation</a>
+                    <a href="faculty-profile.html"
+                        class="nav-link relative text-gray-700 hover:text-orange-500 transition-colors font-medium">Profile</a>
+                </div>
+                <button class="md:hidden text-gray-700" id="mobile-menu-btn"><i
+                        class="fas fa-bars text-xl"></i></button>
+            </div>
+            <div id="mobile-menu" class="hidden md:hidden mt-4 pb-2">
+                <div class="flex flex-col space-y-4">
+                    <a href="faculty-dashboard.html"
+                        class="nav-link relative text-gray-700 hover:text-orange-500 transition-colors font-medium">Dashboard</a>
+                    <a href="faculty-committee.html"
+                        class="nav-link relative text-gray-700 hover:text-orange-500 transition-colors font-medium">Committee</a>
+                    <a href="faculty-events.html"
+                        class="nav-link relative text-gray-700 hover:text-orange-500 transition-colors font-medium">Events</a>
+                    <a href="faculty-reviews.html"
+                        class="nav-link relative text-gray-700 hover:text-orange-500 transition-colors font-medium">Reviews</a>
+                    <a href="faculty-incubation.html"
+                        class="nav-link relative text-orange-500 hover:text-orange-500 transition-colors font-medium font-bold">Incubation</a>
+                    <a href="faculty-profile.html"
+                        class="nav-link relative text-gray-700 hover:text-orange-500 transition-colors font-medium">Profile</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-6 pt-32 pb-12">
+        <div class="mb-12">
+            <h2 class="text-3xl font-black text-slate-900 mb-2">Portfolio Management</h2>
+            <p class="text-slate-500">Track and advance projects under your mentorship. Assign company affiliations as
+                they graduate.</p>
+        </div>
+
+        <!-- Under Incubation Section -->
+        <div class="mb-12">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center text-orange-600">
+                    <i class="fas fa-flask"></i>
+                </div>
+                <h3 class="text-xl font-bold text-slate-900">Under Incubation</h3>
+                <span id="incubationCount" class="text-sm text-slate-500 bg-slate-100 px-2 py-1 rounded-full">0</span>
+            </div>
+            <div id="incubationGrid" class="grid lg:grid-cols-2 gap-8">
+                <!-- Items injected via JS -->
+            </div>
+            <div id="incubationEmpty" class="hidden text-center py-12 bg-slate-50 rounded-2xl">
+                <p class="text-slate-400">No projects currently under incubation</p>
+            </div>
+        </div>
+
+        <!-- Looking for Funding Section -->
+        <div class="mb-12">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
+                    <i class="fas fa-hand-holding-dollar"></i>
+                </div>
+                <h3 class="text-xl font-bold text-slate-900">Looking for Funding</h3>
+                <span id="fundingCount" class="text-sm text-slate-500 bg-slate-100 px-2 py-1 rounded-full">0</span>
+            </div>
+            <div id="fundingGrid" class="grid lg:grid-cols-2 gap-8">
+                <!-- Items injected via JS -->
+            </div>
+            <div id="fundingEmpty" class="hidden text-center py-12 bg-slate-50 rounded-2xl">
+                <p class="text-slate-400">No projects looking for funding yet</p>
+            </div>
+        </div>
+
+        <!-- Funded Companies Section -->
+        <div class="mb-12">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600">
+                    <i class="fas fa-building"></i>
+                </div>
+                <h3 class="text-xl font-bold text-slate-900">Funded Companies</h3>
+                <span id="fundedCount" class="text-sm text-slate-500 bg-slate-100 px-2 py-1 rounded-full">0</span>
+            </div>
+            <div id="fundedGrid" class="grid lg:grid-cols-2 gap-8">
+                <!-- Items injected via JS -->
+            </div>
+            <div id="fundedEmpty" class="hidden text-center py-12 bg-slate-50 rounded-2xl">
+                <p class="text-slate-400">No funded companies yet</p>
+            </div>
+        </div>
+
+        <div id="emptyState" class="hidden text-center py-24">
+            <div
+                class="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4 text-slate-400">
+                <i class="fas fa-rocket text-2xl"></i>
+            </div>
+            <h3 class="text-lg font-bold text-slate-900">No active projects</h3>
+            <p class="text-slate-500">Approve student submissions to start incubating them.</p>
+        </div>
+    </main>
+
+    <!-- Modal for Updating Progress -->
+    <div id="updateModal"
+        class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden z-[100] flex items-center justify-center p-6">
+        <div class="bg-white rounded-3xl w-full max-w-lg overflow-hidden shadow-2xl">
+            <div class="p-8 border-b border-slate-100">
+                <h3 class="text-2xl font-bold text-slate-900">Update Phase</h3>
+                <p class="text-slate-500 text-sm mt-1" id="modalProjectTitle">Project Title</p>
+            </div>
+            <div class="p-8 space-y-6">
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-widest text-slate-400 mb-3">Project
+                        Stage</label>
+                    <select id="stageSelect"
+                        class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-orange-500">
+                        <option value="under_incubation">Under Incubation</option>
+                        <option value="looking_for_funding">Looking for Funding</option>
+                        <option value="found_company">Found Company</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-widest text-slate-400 mb-3">Progress
+                        (%)</label>
+                    <input type="range" id="progressRange" min="0" max="100"
+                        class="w-full h-2 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-orange-500">
+                    <div class="flex justify-between text-[10px] text-slate-400 font-bold mt-2">
+                        <span>0%</span>
+                        <span id="progressValue">0%</span>
+                        <span>100%</span>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-widest text-slate-400 mb-3">Company
+                        Affiliation</label>
+                    <select id="companySelect"
+                        class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-orange-500">
+                        <option value="">No Affiliation</option>
+                        <!-- Companies injected via JS -->
+                    </select>
+                </div>
+            </div>
+            <div class="p-8 bg-slate-50 flex gap-4">
+                <button id="closeModal"
+                    class="flex-1 px-6 py-3 rounded-xl border border-slate-200 font-bold text-slate-600 hover:bg-white transition-all">Cancel</button>
+                <button id="saveUpdate"
+                    class="flex-1 bg-orange-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-orange-700 transition-all shadow-lg shadow-orange-600/20">Save
+                    Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('mobile-menu-btn')?.addEventListener('click', function () {
+            document.getElementById('mobile-menu')?.classList.toggle('hidden');
+        });
+    </script>
+    <script src="/static/js/faculty-incubation.js"></script>
+</body>
+
+</html>

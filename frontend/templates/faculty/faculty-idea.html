@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Idea Details - MAHE Innovation Centre</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+
+    .liquid-glass {
+      background: rgba(255, 255, 255, .1);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, .2);
+      box-shadow: 0 8px 32px rgba(31, 38, 135, .37);
+    }
+
+    .liquid-glass::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255, 255, 255, .4), rgba(255, 255, 255, .1));
+      border-radius: inherit;
+      z-index: -1;
+    }
+
+    .nav-link::before {
+      content: "";
+      position: absolute;
+      bottom: -5px;
+      left: 50%;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #ff6b35, #ff8c42);
+      transition: all .3s ease;
+      transform: translateX(-50%);
+      border-radius: 2px;
+    }
+
+    .nav-link:hover::before {
+      width: 100%;
+    }
+
+    .glass-card {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .badge-pill {
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.25rem 0.7rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    body.dark-mode {
+      background: #0f172a;
+      color: #e2e8f0;
+    }
+
+    body.dark-mode .bg-gray-50,
+    body.dark-mode .bg-gray-100,
+    body.dark-mode .bg-gray-200 {
+      background: #1e293b !important;
+    }
+
+    body.dark-mode .bg-gray-900 {
+      background: #0f172a !important;
+    }
+
+    body.dark-mode .text-gray-800,
+    body.dark-mode .text-gray-900 {
+      color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .text-gray-600,
+    body.dark-mode .text-gray-700 {
+      color: #cbd5e1 !important;
+    }
+
+    body.dark-mode .text-gray-500 {
+      color: #94a3b8 !important;
+    }
+
+    body.dark-mode .text-gray-400 {
+      color: #94a3b8 !important;
+    }
+
+    body.dark-mode .liquid-glass {
+      background: rgba(30, 41, 59, 0.8) !important;
+    }
+
+    body.dark-mode .nav-link {
+      color: #cbd5e1 !important;
+    }
+
+    body.dark-mode .nav-link:hover {
+      color: #ff6b35 !important;
+    }
+
+    body.dark-mode .bg-white {
+      background: #1e293b !important;
+    }
+
+    body.dark-mode .glass-card {
+      background: rgba(30, 41, 59, 0.8) !important;
+    }
+  </style>
+  <script>
+    tailwind.config = { theme: { extend: { colors: { 'orange-primary': '#ff6b35', 'orange-secondary': '#ff8c42' }, fontFamily: { inter: ['Inter', 'sans-serif'] } } } }
+  </script>
+</head>
+
+<body class="bg-gray-200 font-inter overflow-x-hidden">
+  <!-- Nav -->
+  <nav class="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-11/12 max-w-6xl">
+    <div class="liquid-glass rounded-full px-6 py-3 relative">
+      <div class="flex justify-between items-center">
+        <div class="flex items-center space-x-2">
+          <div
+            class="w-8 h-8 bg-gradient-to-br from-orange-primary to-orange-secondary rounded-lg flex items-center justify-center">
+            <span class="text-white font-bold text-sm">M</span>
+          </div>
+          <span class="text-gray-800 font-semibold text-lg">MAHE</span>
+        </div>
+        <div class="hidden md:flex items-center space-x-8 ml-auto">
+          <a href="faculty-dashboard.html"
+            class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors font-medium">Dashboard</a>
+          <a href="faculty-committee.html"
+            class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors font-medium">Committee</a>
+          <a href="faculty-events.html"
+            class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors font-medium">Events</a>
+          <a href="faculty-reviews.html"
+            class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors font-medium">Reviews</a>
+          <a href="faculty-incubation.html"
+            class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors font-medium">Incubation</a>
+          <a href="faculty-profile.html"
+            class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors font-medium">Profile</a>
+        </div>
+        <button class="md:hidden text-gray-700" id="mobile-menu-btn"><i class="fas fa-bars text-xl"></i></button>
+      </div>
+      <div id="mobile-menu" class="hidden md:hidden mt-4 pb-2">
+        <div class="flex flex-col space-y-4">
+          <a href="faculty-dashboard.html"
+            class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors font-medium">Dashboard</a>
+          <a href="faculty-committee.html"
+            class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors font-medium">Committee</a>
+          <a href="faculty-events.html"
+            class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors font-medium">Events</a>
+          <a href="faculty-reviews.html"
+            class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors font-medium">Reviews</a>
+          <a href="faculty-incubation.html"
+            class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors font-medium">Incubation</a>
+          <a href="faculty-profile.html"
+            class="nav-link relative text-gray-700 hover:text-orange-primary transition-colors font-medium">Profile</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <section class="pt-32 pb-24 bg-gray-50 min-h-screen">
+    <div class="container mx-auto px-6 lg:px-12 max-w-5xl">
+      <button id="backButton" class="mb-4 inline-flex items-center text-xs text-gray-600 hover:text-orange-primary">
+        <i class="fas fa-arrow-left mr-2"></i>
+        Back to ideas
+      </button>
+
+      <div id="ideaNotFound"
+        class="hidden glass-card rounded-2xl p-6 bg-white/80 border border-red-200 text-sm text-red-700">
+        The requested idea could not be found. It may have been removed.
+      </div>
+
+      <div id="ideaContainer" class="hidden space-y-6">
+
+        <div class="glass-card rounded-2xl p-6 bg-white/80 border border-gray-200/70">
+          <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+            <div>
+              <p class="text-xs uppercase tracking-[0.2em] text-orange-primary mb-1">Idea details</p>
+              <h1 id="ideaTitle" class="text-2xl md:text-3xl font-black text-gray-900 mb-1">Idea title</h1>
+              <p id="ideaStudent" class="text-sm text-gray-600">Submitted by ...</p>
+              <p class="text-xs text-gray-500 mt-1" id="ideaSubmittedOn"></p>
+            </div>
+            <div class="flex flex-col items-start md:items-end gap-2 text-xs">
+              <span id="ideaStatusBadge" class="badge-pill bg-gray-100 text-gray-700 border border-gray-200">
+                <i class="fas fa-circle text-[10px]"></i>
+                <span>Status</span>
+              </span>
+              <span id="ideaDomainBadge" class="badge-pill bg-blue-50 text-blue-700 border border-blue-200">
+                <i class="fas fa-tag text-[10px]"></i>
+                <span>Domain</span>
+              </span>
+              <div id="ideaTagsContainer" class="flex flex-wrap gap-1"></div>
+              <span id="ideaRequiresReview"
+                class="badge-pill bg-orange-50 text-orange-800 border border-orange-200 hidden">
+                <i class="fas fa-bell text-[10px]"></i>
+                Needs review
+              </span>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="grid lg:grid-cols-3 gap-6">
+          <div class="lg:col-span-2 glass-card rounded-2xl p-6 bg-white/80 border border-gray-200/70">
+            <h2 class="text-lg font-semibold text-gray-900 mb-3">Idea description</h2>
+            <p id="ideaDescription" class="text-sm text-gray-700 leading-relaxed"></p>
+
+            <div class="mt-4 text-xs text-gray-600 space-y-1" id="ideaMetaExtra">
+              <p><i class="fas fa-envelope mr-2 text-[10px]"></i><span id="ideaStudentEmail">Student contact
+                  (optional)</span></p>
+              <p><i class="fas fa-file mr-2 text-[10px]"></i>Attachment: <span id="ideaAttachment">-</span></p>
+              <p class="mt-2">
+                <button id="viewSubmissionBtn"
+                  class="inline-flex items-center gap-1 px-3 py-1 rounded-full border border-gray-300 text-[11px] text-gray-700 hover:border-orange-primary hover:text-orange-primary">
+                  <i class="fas fa-eye"></i>
+                  View submission file
+                </button>
+              </p>
+            </div>
+          </div>
+
+
+          <!-- Review Controls (shown for pending ideas) -->
+          <div id="reviewControlsPanel"
+            class="glass-card rounded-2xl p-6 bg-white/80 border border-gray-200/70 space-y-4">
+            <div>
+              <h2 class="text-lg font-semibold text-gray-900 mb-2">Review this idea</h2>
+              <p class="text-xs text-gray-600 mb-2">Choose a quick review tag. This will also update the idea status you
+                see on other pages.</p>
+              <div class="flex flex-wrap gap-2 text-xs" id="ideaReviewButtons">
+                <button data-review-tag="accepted"
+                  class="px-3 py-1.5 rounded-full border border-emerald-300 text-emerald-700 bg-emerald-50 hover:bg-emerald-100 flex items-center gap-1">
+                  <i class="fas fa-check"></i>
+                  Mark as accepted
+                </button>
+                <button data-review-tag="needs-improvement"
+                  class="px-3 py-1.5 rounded-full border border-orange-300 text-orange-700 bg-orange-50 hover:bg-orange-100 flex items-center gap-1">
+                  <i class="fas fa-wrench"></i>
+                  Needs improvement
+                </button>
+                <button data-review-tag="rejected"
+                  class="px-3 py-1.5 rounded-full border border-rose-300 text-rose-700 bg-rose-50 hover:bg-rose-100 flex items-center gap-1">
+                  <i class="fas fa-xmark"></i>
+                  Reject idea
+                </button>
+              </div>
+            </div>
+
+            <div>
+              <h3 class="text-sm font-semibold text-gray-900 mb-1">Faculty feedback</h3>
+              <p class="text-xs text-gray-600 mb-2">Leave feedback for the student. This will be visible in their
+                dashboard once backend integration is done.</p>
+              <textarea id="ideaFeedback" rows="6"
+                class="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:border-orange-primary"
+                placeholder="Write your comments, suggestions, or questions"></textarea>
+              <button id="saveFeedbackBtn"
+                class="mt-3 w-full px-4 py-2 rounded-lg bg-orange-primary text-white text-sm font-semibold hover:bg-orange-secondary">Save
+                feedback (local demo)</button>
+            </div>
+          </div>
+
+          <!-- Incubation Progress Controls (shown for approved/incubating ideas) -->
+          <div id="incubationControlsPanel"
+            class="hidden glass-card rounded-2xl p-6 bg-white/80 border border-gray-200/70 space-y-6">
+            <div>
+              <h2 class="text-lg font-semibold text-gray-900 mb-2">Update Incubation Progress</h2>
+              <p class="text-xs text-gray-600 mb-4">Track the progress of this idea through the incubation pipeline.</p>
+
+              <!-- Stage Select -->
+              <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Current Stage</label>
+                <select id="incubationStageSelect"
+                  class="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:border-orange-primary">
+                  <option value="under_incubation">Under Incubation</option>
+                  <option value="looking_for_funding">Looking for Funding</option>
+                  <option value="found_company">Found Company / Funded</option>
+                </select>
+              </div>
+
+              <!-- Progress Slider -->
+              <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Progress: <span
+                    id="incubationProgressValue">0%</span></label>
+                <input type="range" id="incubationProgressRange" min="0" max="100" value="0"
+                  class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-orange-primary">
+              </div>
+
+              <!-- Save Button -->
+              <button id="saveIncubationBtn"
+                class="w-full px-4 py-3 rounded-lg bg-orange-primary text-white font-semibold hover:bg-orange-secondary flex items-center justify-center gap-2">
+                <i class="fas fa-save"></i>
+                Save Progress
+              </button>
+            </div>
+
+            <div class="pt-4 border-t border-gray-200">
+              <p class="text-xs text-gray-500">
+                <i class="fas fa-info-circle mr-1"></i>
+                When progress reaches 100% and stage is "Looking for Funding", consider updating to "Found Company" if
+                funded.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="bg-gray-900 text-white py-6 text-center text-xs">
+    <p>© MAHE INNOVATION CENTRE</p>
+  </footer>
+
+  <script src="/static/js/faculty-store.js"></script>
+  <script src="/static/js/faculty-idea.js?v=2"></script>
+</body>
+
+</html>

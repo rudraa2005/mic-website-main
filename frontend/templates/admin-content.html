@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Panel – MAHE Innovation Centre</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 min-h-screen">
+
+  <div class="max-w-7xl mx-auto p-6">
+    <h1 class="text-3xl font-bold mb-6">Admin Panel</h1>
+
+    <!-- Tabs -->
+    <div class="flex gap-3 border-b mb-6 flex-wrap">
+      <button class="tab-btn border-b-2 border-orange-500 px-4 py-2 font-medium" data-tab="resources">Resources</button>
+      <button class="tab-btn px-4 py-2 font-medium hover:text-orange-500" data-tab="about">About</button>
+      <button class="tab-btn px-4 py-2 font-medium hover:text-orange-500" data-tab="events">Events</button>
+      <button class="tab-btn px-4 py-2 font-medium hover:text-orange-500" data-tab="ideas">Idea Approvals</button>
+      <button class="tab-btn px-4 py-2 font-medium hover:text-orange-500" data-tab="work">Work Pipeline</button>
+      <button class="tab-btn px-4 py-2 font-medium hover:text-orange-500" data-tab="faculty">Faculty</button>
+    </div>
+
+    <!-- Sections -->
+    <div id="resources-section" class="section">
+      <div class="flex justify-between mb-4">
+        <h2 class="text-xl font-bold">Resources</h2>
+        <button onclick="openModal('resource')" class="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600">+
+          Add Resource</button>
+      </div>
+      <div id="resources-list" class="grid gap-4 md:grid-cols-2 lg:grid-cols-3"></div>
+    </div>
+
+    <div id="about-section" class="section hidden">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-bold">About Content</h2>
+        <div class="flex gap-2">
+          <select id="addAboutType" class="border rounded px-3 py-2 text-sm" onchange="updateAddButtonLabel()">
+            <option value="about_card">About Card</option>
+            <option value="about_feature">Feature</option>
+            <option value="about_stat">Stat</option>
+            <option value="about_testimonial">Testimonial</option>
+            <option value="team_member">Team Member</option>
+          </select>
+          <button id="addAboutBtn" onclick="openModal(document.getElementById('addAboutType').value)"
+            class="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600">+ Add About Card</button>
+        </div>
+      </div>
+      <div id="about-list" class="grid gap-4 md:grid-cols-2 lg:grid-cols-3"></div>
+    </div>
+
+    <div id="events-section" class="section hidden">
+      <div class="flex justify-between mb-4">
+        <h2 class="text-xl font-bold">Events</h2>
+        <button onclick="openModal('event')" class="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600">+
+          Add Event</button>
+      </div>
+      <div id="events-list" class="grid gap-4 md:grid-cols-2 lg:grid-cols-3"></div>
+    </div>
+
+    <div id="ideas-section" class="section hidden">
+      <div class="flex flex-wrap justify-between items-start mb-4 gap-4">
+        <div>
+          <h2 class="text-xl font-bold">Idea Management</h2>
+          <p class="text-gray-600 text-sm">Review, assign faculty, and add tags to submitted ideas</p>
+        </div>
+        <!-- Filter Tabs -->
+        <div class="flex gap-2 text-sm">
+          <button data-ideas-filter="all" class="ideas-filter-btn px-3 py-1 rounded bg-gray-900 text-white">All</button>
+          <button data-ideas-filter="submitted"
+            class="ideas-filter-btn px-3 py-1 rounded bg-gray-100 text-gray-700 hover:bg-gray-200">Pending</button>
+          <button data-ideas-filter="admin_approved"
+            class="ideas-filter-btn px-3 py-1 rounded bg-gray-100 text-gray-700 hover:bg-gray-200">Approved</button>
+          <button data-ideas-filter="admin_rejected"
+            class="ideas-filter-btn px-3 py-1 rounded bg-gray-100 text-gray-700 hover:bg-gray-200">Rejected</button>
+        </div>
+      </div>
+      <div id="ideas-list" class="grid gap-4 md:grid-cols-2 lg:grid-cols-3"></div>
+    </div>
+
+    <!-- Faculty Assignment Modal -->
+    <div id="facultyAssignModal" class="fixed inset-0 hidden bg-black/40 flex items-center justify-center z-50">
+      <div class="bg-white p-6 rounded-lg w-full max-w-md mx-4 shadow-xl max-h-[80vh] overflow-y-auto">
+        <h3 class="text-xl font-bold mb-2">Assign Faculty</h3>
+        <p id="assignIdeaTitle" class="text-sm text-gray-600 mb-4"></p>
+        <input type="hidden" id="assignIdeaId" />
+
+        <!-- Currently Assigned -->
+        <div class="mb-4">
+          <p class="text-sm font-medium text-gray-700 mb-2">Currently Assigned:</p>
+          <div id="assignedFacultyList" class="space-y-2"></div>
+        </div>
+
+        <!-- Add Faculty -->
+        <div class="mb-4">
+          <label class="block text-sm font-medium text-gray-700 mb-1">Add Faculty Member</label>
+          <select id="facultyToAssign" class="w-full border p-2 rounded">
+            <option value="">Select a faculty member...</option>
+            <!-- Populated dynamically -->
+          </select>
+          <button onclick="addFacultyAssignment()"
+            class="mt-2 bg-blue-500 text-white px-4 py-2 rounded text-sm hover:bg-blue-600">+ Assign</button>
+        </div>
+
+        <div class="flex justify-end pt-3 border-t">
+          <button onclick="closeFacultyAssignModal()" class="px-4 py-2 border rounded hover:bg-gray-100">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tags Modal -->
+    <div id="tagsModal" class="fixed inset-0 hidden bg-black/40 flex items-center justify-center z-50">
+      <div class="bg-white p-6 rounded-lg w-full max-w-md mx-4 shadow-xl">
+        <h3 class="text-xl font-bold mb-2">Manage Tags</h3>
+        <p id="tagsIdeaTitle" class="text-sm text-gray-600 mb-4"></p>
+        <input type="hidden" id="tagsIdeaId" />
+
+        <form id="tagsForm" class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Domain</label>
+            <input id="ideaDomain" class="w-full border p-2 rounded" placeholder="e.g. Healthcare, FinTech, EdTech" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Tags (comma separated)</label>
+            <input id="ideaTags" class="w-full border p-2 rounded" placeholder="e.g. AI, Mobile App, B2B" />
+            <p class="text-xs text-gray-500 mt-1">Enter multiple tags separated by commas</p>
+          </div>
+          <div class="flex justify-end gap-3 pt-3 border-t">
+            <button type="button" onclick="closeTagsModal()"
+              class="px-4 py-2 border rounded hover:bg-gray-100">Cancel</button>
+            <button type="submit" class="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600">Save
+              Tags</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div id="faculty-section" class="section hidden">
+      <div class="flex justify-between mb-4">
+        <h2 class="text-xl font-bold">Faculty Management</h2>
+        <button onclick="openAddFacultyModal()" class="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600">+
+          Add Faculty</button>
+      </div>
+      <div id="faculty-list" class="grid gap-4 md:grid-cols-2 lg:grid-cols-3"></div>
+    </div>
+
+    <!-- Work Pipeline Section -->
+    <div id="work-section" class="section hidden">
+      <div class="flex justify-between mb-4 flex-wrap gap-4">
+        <div>
+          <h2 class="text-xl font-bold">Work Pipeline Management</h2>
+          <p class="text-gray-600 text-sm">Manage incubation pipeline items and companies</p>
+        </div>
+        <button onclick="openAddCompanyModal()" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">+
+          Add Company</button>
+      </div>
+
+      <!-- Companies Section -->
+      <div class="mb-8">
+        <h3 class="text-lg font-semibold mb-3">Companies</h3>
+        <div id="companies-list" class="grid gap-3 md:grid-cols-2 lg:grid-cols-4"></div>
+      </div>
+
+      <!-- Work Items Section -->
+      <h3 class="text-lg font-semibold mb-3">Incubation Projects</h3>
+      <div id="work-list" class="grid gap-4 md:grid-cols-2 lg:grid-cols-3"></div>
+    </div>
+  </div>
+
+  <!-- Add Company Modal -->
+  <div id="companyModal" class="fixed inset-0 hidden bg-black/40 flex items-center justify-center z-50">
+    <div class="bg-white p-6 rounded-lg w-full max-w-md mx-4 shadow-xl">
+      <h3 class="text-xl font-bold mb-4">Add Company</h3>
+      <form id="companyForm" class="space-y-3">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Company Name *</label>
+          <input id="companyName" class="w-full border p-2 rounded" placeholder="Enter company name" required />
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Logo URL</label>
+          <input id="companyLogo" class="w-full border p-2 rounded" placeholder="https://example.com/logo.png" />
+        </div>
+        <div class="flex justify-end gap-3 pt-3">
+          <button type="button" onclick="closeCompanyModal()"
+            class="px-4 py-2 border rounded hover:bg-gray-100">Cancel</button>
+          <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Add
+            Company</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Edit Work Modal -->
+  <div id="workModal" class="fixed inset-0 hidden bg-black/40 flex items-center justify-center z-50">
+    <div class="bg-white p-6 rounded-lg w-full max-w-lg mx-4 shadow-xl max-h-[90vh] overflow-y-auto">
+      <h3 class="text-xl font-bold mb-4">Edit Work Item</h3>
+      <form id="workForm" class="space-y-3">
+        <input id="workId" type="hidden" />
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Title *</label>
+          <input id="workTitle" class="w-full border p-2 rounded" placeholder="Enter title" required />
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+          <textarea id="workDescription" class="w-full border p-2 rounded" rows="3"
+            placeholder="Enter description"></textarea>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Stage</label>
+          <select id="workStage" class="w-full border p-2 rounded">
+            <option value="under_incubation">Under Incubation</option>
+            <option value="looking_for_funding">Looking for Funding</option>
+            <option value="funded">Found Companies</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Progress (%)</label>
+          <input id="workProgress" type="number" min="0" max="100" class="w-full border p-2 rounded"
+            placeholder="0-100" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Associated Company</label>
+          <select id="workCompany" class="w-full border p-2 rounded">
+            <option value="">None</option>
+            <!-- Populated dynamically -->
+          </select>
+        </div>
+        <div class="flex justify-end gap-3 pt-3">
+          <button type="button" onclick="closeWorkModal()"
+            class="px-4 py-2 border rounded hover:bg-gray-100">Cancel</button>
+          <button type="submit" class="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600">Save
+            Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Content Modal -->
+  <div id="modal" class="fixed inset-0 hidden bg-black/40 flex items-center justify-center z-50">
+    <div class="bg-white p-6 rounded-lg w-full max-w-lg mx-4 shadow-xl max-h-[90vh] overflow-y-auto">
+      <h3 id="modalTitle" class="text-xl font-bold mb-4"></h3>
+
+      <form id="contentForm" class="space-y-3">
+        <input id="contentId" type="hidden" />
+        <input id="contentType" type="hidden" />
+
+        <!-- Common Fields -->
+        <div id="fieldTitle">
+          <label id="titleLabel" class="block text-sm font-medium text-gray-700 mb-1">Title *</label>
+          <input id="title" class="w-full border p-2 rounded focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+            placeholder="Enter title" required />
+        </div>
+
+        <div id="fieldDescription">
+          <label id="descriptionLabel" class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+          <textarea id="description"
+            class="w-full border p-2 rounded focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+            placeholder="Enter description" rows="3"></textarea>
+        </div>
+
+        <div id="fieldImageUrl">
+          <label id="imageLabel" class="block text-sm font-medium text-gray-700 mb-1">Image URL</label>
+          <input id="imageUrl"
+            class="w-full border p-2 rounded focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+            placeholder="https://example.com/image.jpg" />
+        </div>
+
+        <!-- Icon field for features -->
+        <div id="fieldIcon" class="hidden">
+          <label class="block text-sm font-medium text-gray-700 mb-1">Icon (emoji or icon name)</label>
+          <input id="iconField"
+            class="w-full border p-2 rounded focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+            placeholder="💡 or icon-name" />
+        </div>
+
+        <!-- Role field for team members -->
+        <div id="fieldRole" class="hidden">
+          <label class="block text-sm font-medium text-gray-700 mb-1">Role/Position</label>
+          <input id="roleField"
+            class="w-full border p-2 rounded focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+            placeholder="e.g. Director, Professor" />
+        </div>
+
+        <!-- Value field for stats -->
+        <div id="fieldStatValue" class="hidden">
+          <label class="block text-sm font-medium text-gray-700 mb-1">Stat Value *</label>
+          <input id="statValue"
+            class="w-full border p-2 rounded focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+            placeholder="e.g. 500+, 95%" />
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Order Index</label>
+          <input id="orderIndex" type="number"
+            class="w-full border p-2 rounded focus:ring-2 focus:ring-orange-500 focus:border-orange-500" placeholder="0"
+            value="0" />
+        </div>
+
+        <!-- Event Fields -->
+        <div id="eventFields" class="hidden space-y-3 pt-2 border-t">
+          <h4 class="font-medium text-gray-800">Event Details</h4>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Event Date</label>
+            <input id="eventDate" type="date"
+              class="w-full border p-2 rounded focus:ring-2 focus:ring-orange-500 focus:border-orange-500" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Venue</label>
+            <input id="venue"
+              class="w-full border p-2 rounded focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+              placeholder="Event venue" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Price</label>
+            <input id="price"
+              class="w-full border p-2 rounded focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+              placeholder="Free or price" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Registration Link</label>
+            <input id="regLink"
+              class="w-full border p-2 rounded focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+              placeholder="https://..." />
+          </div>
+        </div>
+
+        <div class="flex gap-2 pt-4">
+          <button type="submit"
+            class="bg-orange-500 text-white px-4 py-2 rounded w-full hover:bg-orange-600 font-medium">Save</button>
+          <button type="button" onclick="closeModal()"
+            class="border border-gray-300 px-4 py-2 rounded w-full hover:bg-gray-50 font-medium">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Faculty Modal -->
+  <div id="facultyModal" class="fixed inset-0 hidden bg-black/40 flex items-center justify-center z-50">
+    <div class="bg-white p-6 rounded-lg w-full max-w-lg mx-4 shadow-xl">
+      <h3 id="facultyModalTitle" class="text-xl font-bold mb-4">Add Faculty</h3>
+
+      <form id="facultyForm" class="space-y-3">
+        <input id="facultyId" type="hidden" />
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Name *</label>
+          <input id="facultyName"
+            class="w-full border p-2 rounded focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+            placeholder="Faculty name" required />
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Email *</label>
+          <input id="facultyEmail" type="email"
+            class="w-full border p-2 rounded focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+            placeholder="faculty@example.com" required />
+        </div>
+
+        <div id="facultyPasswordField">
+          <label class="block text-sm font-medium text-gray-700 mb-1">Password *</label>
+          <input id="facultyPassword" type="password"
+            class="w-full border p-2 rounded focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+            placeholder="Password" />
+        </div>
+
+        <div class="flex gap-2 pt-4">
+          <button type="submit"
+            class="bg-orange-500 text-white px-4 py-2 rounded w-full hover:bg-orange-600 font-medium">Save</button>
+          <button type="button" onclick="closeFacultyModal()"
+            class="border border-gray-300 px-4 py-2 rounded w-full hover:bg-gray-50 font-medium">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="/static/js/admin-content.js"></script>
+
+  <!-- Chatbot Widget -->
+  <link rel="stylesheet" href="assets/chatbot.css">
+  <script src="assets/chatbot.js"></script>
+</body>
+
+</html>
